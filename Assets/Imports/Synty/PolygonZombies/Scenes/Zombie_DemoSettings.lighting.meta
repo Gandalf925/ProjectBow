@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cd48f1588f4d2544eaf411acc5fcc986
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 131930
+  packageName: POLYGON City Zombies - Low Poly 3D Art by Synty
+  packageVersion: 1.6.2
+  assetPath: Assets/PolygonZombies/Scenes/Zombie_DemoSettings.lighting
+  uploadId: 662780
