@@ -64,28 +64,28 @@ public class BowController : MonoBehaviour
     // SmallShotの処理
     public void SetVerySmallShot()
     {
-        shootForce = 50;
+        shootForce = 30;
         setAnimName = "SmallShot";
     }
 
     // SmallShotの処理
     public void SetSmallShot()
     {
-        shootForce = 80;
+        shootForce = 60;
         setAnimName = "SmallShot";
     }
 
     // MiddleShotの処理
     public void SetMiddleShot()
     {
-        shootForce = 150;
+        shootForce = 90;
         setAnimName = "MiddleShot";
     }
 
     // FullShotの処理
     public void SetFullShot()
     {
-        shootForce = 200;
+        shootForce = 120;
         setAnimName = "FullShot";
     }
 }

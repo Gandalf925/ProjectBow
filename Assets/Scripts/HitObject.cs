@@ -13,7 +13,7 @@ public class HitObject : MonoBehaviour
     {
         if (collision.gameObject.tag == "Arrow")
         {
-            Destroy(gameObject, 1f);
+            Destroy(gameObject);
         }
     }
 }
