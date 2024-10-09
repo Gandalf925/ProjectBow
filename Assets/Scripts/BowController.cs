@@ -13,21 +13,9 @@ public class BowController : MonoBehaviour
 
     private Animator anim;
 
-    // Cinemachine関連
-    public CinemachineVirtualCamera cinemachineCam; // Cinemachine Virtual Camera
-    public float slowMotionScale = 0.5f; // スローモーションの速度
-    public float slowMotionDuration = 5f; // スローモーションの持続時間
-    public Vector3 cameraOffset = new Vector3(0, 2, -5); // カメラのオフセット位置
-    public Vector3 cameraResetPosition = new Vector3(0, 2, -20); // カメラのリセット位置
-
     void Start()
     {
         anim = GetComponent<Animator>();
-        if (cinemachineCam != null)
-        {
-            cinemachineCam.Follow = null; // 初期状態では追従をオフにしておく
-            cinemachineCam.LookAt = null;
-        }
     }
 
     void Update()
@@ -75,21 +63,21 @@ public class BowController : MonoBehaviour
     // SmallShotの処理
     public void SetSmallShot()
     {
-        shootForce = 60;
+        shootForce = 50;
         setAnimName = "SmallShot";
     }
 
     // MiddleShotの処理
     public void SetMiddleShot()
     {
-        shootForce = 90;
+        shootForce = 80;
         setAnimName = "MiddleShot";
     }
 
     // FullShotの処理
     public void SetFullShot()
     {
-        shootForce = 120;
+        shootForce = 100;
         setAnimName = "FullShot";
     }
 }

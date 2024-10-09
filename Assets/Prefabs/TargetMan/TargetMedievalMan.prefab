@@ -380,7 +380,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8689040035308775546
 Transform:
   m_ObjectHideFlags: 0
@@ -1967,7 +1967,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6554465261381206807}
-  - component: {fileID: 8382078292598965184}
+  - component: {fileID: 7211712135490931303}
   m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
@@ -1993,8 +1993,8 @@ Transform:
   - {fileID: 9162593396342973623}
   m_Father: {fileID: 7545804025908654525}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &8382078292598965184
-SphereCollider:
+--- !u!136 &7211712135490931303
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2011,9 +2011,11 @@ SphereCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.1727219
-  m_Center: {x: 0, y: 0.07, z: -0.0067931553}
+  serializedVersion: 2
+  m_Radius: 0.14
+  m_Height: 0.43
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3558360456943708986
 GameObject:
   m_ObjectHideFlags: 0
@@ -2913,10 +2915,11 @@ GameObject:
   - component: {fileID: 7297053531191163007}
   - component: {fileID: 3414329446487747226}
   - component: {fileID: 7724061464376264355}
+  - component: {fileID: 6977130375036163468}
   - component: {fileID: 4184629567891925874}
   m_Layer: 0
-  m_Name: TargetMan
-  m_TagString: Untagged
+  m_Name: TargetMedievalMan
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3008,6 +3011,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &6977130375036163468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5661588507491685086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ae76e71fe859f1479590cbda2eb9630, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageManager: {fileID: 0}
 --- !u!114 &4184629567891925874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3023,6 +3039,7 @@ MonoBehaviour:
   ragdollPrefab: {fileID: 8042006314739392776, guid: 6fb72246789d9cc4cafb4b680f00f478,
     type: 3}
   originalRootBone: {fileID: 6517188238850374303}
+  vcam: {fileID: 0}
 --- !u!1 &5864649986409504096
 GameObject:
   m_ObjectHideFlags: 0
@@ -3207,7 +3224,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &448150113190933083
 Transform:
   m_ObjectHideFlags: 0

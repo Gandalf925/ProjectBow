@@ -16,9 +16,6 @@ public class TargetRagdoll : MonoBehaviour
     {
         MatchAllChildTransforms(originalRootBone, ragdollRootBone);
         skin.sharedMesh = originalSkin.sharedMesh;
-
-        Vector3 randomDir = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
-        ApplyExplosionToRagdoll(ragdollRootBone, 300f, randomDir, 10f);
     }
 
     void MatchAllChildTransforms(Transform root, Transform clone)
@@ -35,15 +32,23 @@ public class TargetRagdoll : MonoBehaviour
         }
     }
 
-    private void ApplyExplosionToRagdoll(Transform root, float explosionForce, Vector3 explosionPosition, float explosionRange)
+    public void Hit(Vector3 hitPoint, Vector3 hitForceDirection, float forceMagnitude)
+    {
+        Vector3 explosionPosition = hitPoint;
+        ApplyHitForceToRagdoll(ragdollRootBone, forceMagnitude, hitForceDirection, explosionPosition);
+    }
+
+    // 力をラグドールの特定の部位に適用するメソッド
+    private void ApplyHitForceToRagdoll(Transform root, float forceMagnitude, Vector3 hitForceDirection, Vector3 hitPoint)
     {
         foreach (Transform child in root)
         {
             if (child.TryGetComponent<Rigidbody>(out Rigidbody childRigidbody))
             {
-                childRigidbody.AddExplosionForce(explosionForce, explosionPosition, explosionRange);
+                // 力を衝突点と矢の方向に基づいて適用
+                childRigidbody.AddForceAtPosition(hitForceDirection * forceMagnitude, hitPoint, ForceMode.Impulse);
             }
-            ApplyExplosionToRagdoll(child, explosionForce, explosionPosition, explosionRange);
+            ApplyHitForceToRagdoll(child, forceMagnitude, hitForceDirection, hitPoint);
         }
     }
 }
