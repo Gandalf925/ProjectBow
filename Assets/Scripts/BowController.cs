@@ -1,21 +1,33 @@
+using System.Collections;
 using UnityEngine;
+using Cinemachine;
 
 public class BowController : MonoBehaviour
 {
-    public GameObject arrowPrefab; // 矢のプレハブ
-    public GameObject currentArrow; // 矢
-    public Transform arrowSpawnPoint; // 矢が発射される位置
-    public float shootForce = 100f; // 矢の飛ばす力（初期値）
-    public float rotationSpeed = 1f; // 弓の回転速度
-    private bool isAiming = false; // 矢を構えているかどうか
-    private int frameCount = 0; // フレーム数カウント
+    [SerializeField] GameObject bow;
+    [SerializeField] GameObject arrowPrefab; // 矢のプレハブ
+    GameObject currentArrow; // 矢
+    [SerializeField] Transform arrowSpawnPoint; // 矢が発射される位置
+    [SerializeField] float shootForce = 100f; // 矢の飛ばす力（初期値）
     private string setAnimName;
 
     private Animator anim;
 
+    // Cinemachine関連
+    public CinemachineVirtualCamera cinemachineCam; // Cinemachine Virtual Camera
+    public float slowMotionScale = 0.5f; // スローモーションの速度
+    public float slowMotionDuration = 5f; // スローモーションの持続時間
+    public Vector3 cameraOffset = new Vector3(0, 2, -5); // カメラのオフセット位置
+    public Vector3 cameraResetPosition = new Vector3(0, 2, -20); // カメラのリセット位置
+
     void Start()
     {
         anim = GetComponent<Animator>();
+        if (cinemachineCam != null)
+        {
+            cinemachineCam.Follow = null; // 初期状態では追従をオフにしておく
+            cinemachineCam.LookAt = null;
+        }
     }
 
     void Update()
@@ -23,19 +35,11 @@ public class BowController : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) // 左クリックで矢を構える
         {
             AimBow();
-            isAiming = true;
-            frameCount = 0; // フレームカウントのリセット
-        }
-
-        if (isAiming)
-        {
-            frameCount++; // フレーム数をカウントする
         }
 
         if (Input.GetMouseButtonUp(0)) // 左クリックを離すと矢を飛ばす
         {
             ShootArrow(currentArrow);
-            isAiming = false;
         }
     }
 
