@@ -36,9 +36,12 @@ public class Arrow : MonoBehaviour
     {
         rb.collisionDetectionMode = CollisionDetectionMode.Discrete; // CCDを無効化
 
+        // 矢の位置と回転を設定し、指定されたボーンを親に設定
         transform.position = savedPosition;
         transform.rotation = savedRotation;
+        rb.isKinematic = true; // 物理演算を無効化
+        GetComponent<Collider>().enabled = false; // コライダーを無効化
 
-        transform.SetParent(newParent); // ラグドールの対応する部位に設定
+        transform.SetParent(newParent); // ラグドールの対応する最下層の部位に設定
     }
 }

@@ -42,9 +42,6 @@ public class Target : MonoBehaviour
                     Debug.Log("Head hit! Game Cleared.");
                 }
             }
-
-
-
         }
     }
 
@@ -53,5 +50,4 @@ public class Target : MonoBehaviour
         // ターゲットが破壊される際にStageManagerから削除
         stageManager.RemoveTarget(this);
     }
-
 }
