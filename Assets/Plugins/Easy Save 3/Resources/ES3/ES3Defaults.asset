@@ -36,6 +36,7 @@ MonoBehaviour:
     - MeshBakerCore
     - MeshBakerExamples
     - ParticleImage
+    - RayFireAssembly
     - UnityUIExtensions
     - VRuler
     - Whinarn.UnityMeshSimplifier.Runtime
