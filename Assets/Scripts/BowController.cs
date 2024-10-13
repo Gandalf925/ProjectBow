@@ -10,16 +10,23 @@ public class BowController : MonoBehaviour
     [SerializeField] Transform arrowSpawnPoint; // 矢が発射される位置
     [SerializeField] float shootForce = 100f; // 矢の飛ばす力（初期値）
     private string setAnimName;
+    private StageManagerBase stageManager;
 
     private Animator anim;
 
+
+
     void Start()
     {
+        stageManager = FindObjectOfType<StageManagerBase>();
         anim = GetComponent<Animator>();
     }
 
     void Update()
     {
+        if (stageManager.bowCount <= 0) return;
+        if (stageManager.isGameEnded) return;
+
         if (Input.GetMouseButtonDown(0)) // 左クリックで矢を構える
         {
             AimBow();
@@ -51,6 +58,9 @@ public class BowController : MonoBehaviour
         currentArrow.transform.SetParent(null); // 矢を弓から離す
         anim.SetBool("isAiming", false); // 弓のアニメーションを停止
         anim.SetTrigger(setAnimName); // 弓のアニメーションを再生
+
+        // StageManagerに発射回数を通知
+        stageManager.OnArrowShot();
     }
 
     // SmallShotの処理

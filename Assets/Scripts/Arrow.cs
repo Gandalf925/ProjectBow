@@ -5,43 +5,49 @@ public class Arrow : MonoBehaviour
     private Rigidbody rb;
     private Vector3 savedPosition;
     private Quaternion savedRotation;
-    private bool isStuck = false;
+    private StageManagerBase stageManager;
+    bool isEnd = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        stageManager = FindObjectOfType<StageManagerBase>();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!isStuck && collision.gameObject.CompareTag("Target"))
+        if (!isEnd && collision.gameObject.CompareTag("Target"))
         {
+            isEnd = true;
+            stageManager.CountHitArrow();
             StickToTarget(collision);
+
+        }
+        else if (!isEnd && collision.gameObject.CompareTag("Out"))
+        {
+            // 「Out」に当たった場合にカウントを増やす
+            isEnd = true;
+            stageManager.CountOutArrow();
         }
     }
 
     private void StickToTarget(Collision collision)
     {
-        // 矢が刺さった位置と回転を保存
         ContactPoint contact = collision.GetContact(0);
         savedPosition = contact.point;
         savedRotation = Quaternion.LookRotation(contact.normal * -1);
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        isStuck = true;
+        GetComponent<Collider>().enabled = false;
     }
 
-    // 刺さった位置と回転で矢を再配置
     public void StickToRagdoll(Transform newParent)
     {
-        rb.collisionDetectionMode = CollisionDetectionMode.Discrete; // CCDを無効化
-
-        // 矢の位置と回転を設定し、指定されたボーンを親に設定
+        rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
         transform.position = savedPosition;
         transform.rotation = savedRotation;
-        rb.isKinematic = true; // 物理演算を無効化
-        GetComponent<Collider>().enabled = false; // コライダーを無効化
+        rb.isKinematic = true;
 
-        transform.SetParent(newParent); // ラグドールの対応する最下層の部位に設定
+        transform.SetParent(newParent);
     }
 }
