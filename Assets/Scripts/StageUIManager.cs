@@ -62,12 +62,13 @@ public class StageUIManager : MonoBehaviour
     // Retryボタンを押したときの処理
     private void OnRetry()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     // StageSelectボタンを押したときの処理
     private void OnStageSelect()
     {
-        // UnityEngine.SceneManagement.SceneManager.LoadScene("StageSelect");
+        StageLoader.Instance.UnloadStage();
+        SceneManager.LoadScene("StageSelect");
     }
 }

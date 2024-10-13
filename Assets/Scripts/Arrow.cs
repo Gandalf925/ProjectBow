@@ -6,7 +6,7 @@ public class Arrow : MonoBehaviour
     private Vector3 savedPosition;
     private Quaternion savedRotation;
     private StageManagerBase stageManager;
-    bool isEnd = false;
+    public bool isEnd = false;
 
     void Start()
     {
@@ -38,15 +38,16 @@ public class Arrow : MonoBehaviour
         savedRotation = Quaternion.LookRotation(contact.normal * -1);
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+
+        rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+        rb.isKinematic = true;
         GetComponent<Collider>().enabled = false;
     }
 
     public void StickToRagdoll(Transform newParent)
     {
-        rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
         transform.position = savedPosition;
         transform.rotation = savedRotation;
-        rb.isKinematic = true;
 
         transform.SetParent(newParent);
     }

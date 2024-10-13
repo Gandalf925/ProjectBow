@@ -27,19 +27,15 @@ public class Target : MonoBehaviour
                     float forceMagnitude = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
 
                     targetRagdoll?.Hit(hitPoint, hitDirection, forceMagnitude);
-                    Debug.Log("Head hit! Game Cleared.");
                     return; // 他の部位のチェックをスキップ
                 }
                 else
                 {
-                    // 他の部位に当たった場合の処理
-                    Debug.Log("Body hit!");
                     Vector3 hitPoint = contact.point;
                     Vector3 hitDirection = collision.relativeVelocity.normalized;
                     float forceMagnitude = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
 
                     targetRagdoll?.Hit(hitPoint, hitDirection, forceMagnitude);
-                    Debug.Log("Head hit! Game Cleared.");
                 }
             }
         }

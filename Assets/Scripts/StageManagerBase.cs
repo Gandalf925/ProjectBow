@@ -4,34 +4,78 @@ using UnityEngine;
 
 public class StageManagerBase : MonoBehaviour
 {
-    StageUIManager stageUIManager;
-    [SerializeField] GameObject bow;
-    BowController bowController;
-    [SerializeField] Cinemachine.CinemachineVirtualCamera targetVcam;
+    private StageUIManager stageUIManager;
+    [SerializeField] private BowController bow;
+    [SerializeField] private Cinemachine.CinemachineVirtualCamera targetVcam;
+    [SerializeField] private Cinemachine.CinemachineVirtualCamera mainVirtualCamera;
     public GameObject vcamTarget;
-    public List<Target> targets;
 
+    public List<MonoBehaviour> targets;
+
+    public int bowCount;
     private int initialBowCount;
-    public int bowCount = 5;
-    private int outArrowCount = 0; // 「Out」エリアに当たった矢のカウント
-    private int hitArrowCount = 0; // ターゲットに命中した矢のカウント
+    private int outArrowCount = 0;
+    private int hitArrowCount = 0;
 
     public bool isGameCleared = false;
     private bool isGameOver = false;
-    private bool isLastArrowFired = false;
-
     public bool isGameEnded = false;
+    private bool isStageSetupComplete = false;
+
+    private int threeStarThreshold;
+    private int twoStarThreshold;
+
+    // ステージデータを受け取るメソッド
+    public void Initialize(StageData stageData)
+    {
+        bowCount = stageData.maxArrowCount;
+        initialBowCount = bowCount;
+        threeStarThreshold = stageData.threeStarThreshold;
+        twoStarThreshold = stageData.twoStarThreshold;
+
+        // カメラの優先順位をリセット
+        mainVirtualCamera = FindObjectOfType<CameraController>().GetComponent<Cinemachine.CinemachineVirtualCamera>();
+
+        bow = FindObjectOfType<BowController>();
+        bow.transform.SetParent(Camera.main.transform);
+        bow.transform.localPosition = new Vector3(0f, -0.175f, 1.11f);
+        bow.transform.localRotation = Quaternion.Euler(0, 0, 77.5810089f);
+        bow.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+
+        targetVcam.Priority = 0; // TargetVcamの優先度を低く設定
+        mainVirtualCamera.Priority = 10; // MainVirtualCameraの優先度を高く設定
+    }
 
     private void Start()
     {
-        bowController = bow.GetComponent<BowController>();
         stageUIManager = FindObjectOfType<StageUIManager>();
-        initialBowCount = bowCount;
         stageUIManager.UpdateArrowCount(bowCount);
+
+        StartCoroutine(SetupStage());
+    }
+
+    private IEnumerator SetupStage()
+    {
+        yield return new WaitForSeconds(0.5f);
+        GameObject[] targetObjects = GameObject.FindGameObjectsWithTag("Target");
+        targets = new List<MonoBehaviour>();
+
+        foreach (var targetObject in targetObjects)
+        {
+            MonoBehaviour targetComponent = targetObject.GetComponent<MonoBehaviour>();
+            if (targetComponent != null)
+            {
+                targets.Add(targetComponent);
+            }
+        }
+
+        isStageSetupComplete = true;
     }
 
     private void Update()
     {
+        if (!isStageSetupComplete) return;
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
@@ -47,7 +91,6 @@ public class StageManagerBase : MonoBehaviour
             StartCoroutine(GameClear());
         }
 
-        // 矢がなくなり、全ターゲットに命中していない場合にゲームオーバー
         if (bowCount <= 0 && initialBowCount == (outArrowCount + hitArrowCount) && targets.Count > 0 && !isGameOver)
         {
             GameOver();
@@ -60,13 +103,11 @@ public class StageManagerBase : MonoBehaviour
         stageUIManager.UpdateArrowCount(bowCount);
     }
 
-    // 「Out」に当たった矢をカウント
     public void CountOutArrow()
     {
         outArrowCount++;
     }
 
-    // ターゲットに当たった矢をカウント
     public void CountHitArrow()
     {
         hitArrowCount++;
@@ -74,7 +115,7 @@ public class StageManagerBase : MonoBehaviour
 
     private int CalculateStarRating()
     {
-        int missedShots = outArrowCount; // 外した矢の本数
+        int missedShots = outArrowCount;
         bool allTargetsHit = targets.Count == 0;
 
         if (!allTargetsHit)
@@ -82,11 +123,11 @@ public class StageManagerBase : MonoBehaviour
             return 0;
         }
 
-        if (missedShots <= 1)
+        if (missedShots <= threeStarThreshold)
         {
             return 3;
         }
-        else if (missedShots <= 3)
+        else if (missedShots <= twoStarThreshold)
         {
             return 2;
         }
@@ -102,7 +143,6 @@ public class StageManagerBase : MonoBehaviour
         {
             isGameEnded = true;
             isGameOver = true;
-            Debug.Log("Game Over! Out of bounds.");
             stageUIManager.ShowGameOverPanel();
         }
     }
@@ -110,13 +150,18 @@ public class StageManagerBase : MonoBehaviour
     public IEnumerator GameClear()
     {
         isGameEnded = true;
-
         bow.gameObject.SetActive(false);
 
-        targetVcam.Follow = vcamTarget.transform;
-        targetVcam.LookAt = vcamTarget.transform;
-        targetVcam.transform.position = vcamTarget.transform.position + targetVcam.GetCinemachineComponent<Cinemachine.CinemachineTransposer>().m_FollowOffset;
-        targetVcam.Priority = 50;
+        // クリア時のカメラ設定
+        targetVcam.gameObject.SetActive(true);
+
+        if (targetVcam.Follow != null)
+        {
+            targetVcam.Priority = 50; // TargetVcamの優先度を上げる
+            targetVcam.Follow = vcamTarget.transform;
+            targetVcam.LookAt = vcamTarget.transform;
+            targetVcam.transform.position = vcamTarget.transform.position + targetVcam.GetCinemachineComponent<Cinemachine.CinemachineTransposer>().m_FollowOffset;
+        }
 
         yield return new WaitForSecondsRealtime(3f);
         Time.timeScale = 0f;
@@ -127,14 +172,14 @@ public class StageManagerBase : MonoBehaviour
             int starRating = CalculateStarRating();
             stageUIManager.ShowGameClearPanel(starRating);
         }
+
+        // StageClear後のカメラ優先順位リセット
+        targetVcam.Priority = 0; // TargetVcamの優先度を下げる
+        mainVirtualCamera.Priority = 10; // MainVirtualCameraの優先度を上げる
+        Time.timeScale = 1f;
     }
 
-    public bool IsLastArrowFired()
-    {
-        return isLastArrowFired;
-    }
-
-    public void RemoveTarget(Target target)
+    public void RemoveTarget(MonoBehaviour target)
     {
         if (targets.Contains(target))
         {

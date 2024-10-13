@@ -41,9 +41,13 @@ public class BowController : MonoBehaviour
     void AimBow()
     {
         GameObject arrow = Instantiate(arrowPrefab, arrowSpawnPoint.position, arrowSpawnPoint.rotation); // 矢を生成
+        Debug.Log("arrow Instantiate");
         arrow.transform.SetParent(arrowSpawnPoint); // 矢を弓に取り付ける
+        Debug.Log("arrow SetParent");
         currentArrow = arrow;
+        Debug.Log("currentArrow = arrow");
         anim.SetBool("isAiming", true); // 弓のアニメーションを再生
+        Debug.Log("anim.SetBool");
     }
 
     void ShootArrow(GameObject arrow)
@@ -54,8 +58,10 @@ public class BowController : MonoBehaviour
 
         // 矢に設定された shootForce を適用して発射
         rb.AddForce(arrowSpawnPoint.forward * shootForce, ForceMode.Impulse);
+        Debug.Log("rb.AddForce");
 
         currentArrow.transform.SetParent(null); // 矢を弓から離す
+        Debug.Log("currentArrow.transform.SetParent");
         anim.SetBool("isAiming", false); // 弓のアニメーションを停止
         anim.SetTrigger(setAnimName); // 弓のアニメーションを再生
 
