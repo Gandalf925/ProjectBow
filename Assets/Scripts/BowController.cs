@@ -1,7 +1,5 @@
-using System.Collections;
 using UnityEngine;
-using Cinemachine;
-using NUnit.Framework;
+using UnityEngine.EventSystems;
 
 public class BowController : MonoBehaviour
 {
@@ -24,15 +22,22 @@ public class BowController : MonoBehaviour
         if (stageManager.bowCount <= 0 || stageManager.isGameEnded)
             return;
 
-        if (Input.GetMouseButtonDown(0)) // 左クリックで矢を構える
+        // UIボタンを押している間はAimしない
+        if (Input.GetMouseButtonDown(0) && !IsPointerOverUI())
         {
             AimBow();
         }
 
-        if (Input.GetMouseButtonUp(0)) // 左クリックを離すと矢を飛ばす
+        if (Input.GetMouseButtonUp(0) && !IsPointerOverUI())
         {
             ShootArrow();
         }
+    }
+
+    private bool IsPointerOverUI()
+    {
+        // マウスまたはタッチがUI要素上にあるかをチェック
+        return EventSystem.current.IsPointerOverGameObject();
     }
 
     private void AimBow()
