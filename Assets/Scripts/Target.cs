@@ -10,6 +10,7 @@ public class Target : MonoBehaviour
     private void Start()
     {
         targetRagdoll = GetComponent<TargetRagdoll>();
+        stageManager = FindObjectOfType<StageManagerBase>();
     }
 
     private void OnCollisionEnter(Collision collision)

@@ -5,12 +5,14 @@ using UnityEngine;
 public class StageManagerBase : MonoBehaviour
 {
     private StageUIManager stageUIManager;
+    private string stageName;
     [SerializeField] private BowController bow;
     [SerializeField] private Cinemachine.CinemachineVirtualCamera targetVcam;
     [SerializeField] private Cinemachine.CinemachineVirtualCamera mainVirtualCamera;
     public GameObject vcamTarget;
 
     public List<MonoBehaviour> targets;
+    [SerializeField] Light pointLight;
 
     public int bowCount;
     private int initialBowCount;
@@ -30,15 +32,17 @@ public class StageManagerBase : MonoBehaviour
     {
         bowCount = stageData.maxArrowCount;
         initialBowCount = bowCount;
+        stageName = stageData.name;
         threeStarThreshold = stageData.threeStarThreshold;
         twoStarThreshold = stageData.twoStarThreshold;
+        pointLight.intensity = stageData.pointLightIntensity;
 
         // カメラの優先順位をリセット
         mainVirtualCamera = FindObjectOfType<CameraController>().GetComponent<Cinemachine.CinemachineVirtualCamera>();
 
         bow = FindObjectOfType<BowController>();
         bow.transform.SetParent(Camera.main.transform);
-        bow.transform.localPosition = new Vector3(0f, -0.175f, 1.11f);
+        bow.transform.localPosition = new Vector3(0f, -0.175f, 1.5f);
         bow.transform.localRotation = Quaternion.Euler(0, 0, 77.5810089f);
         bow.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
 
@@ -78,7 +82,8 @@ public class StageManagerBase : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+            StageLoader.Instance.UnloadStage();
+            StageLoader.Instance.LoadCurrentStage();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -155,8 +160,9 @@ public class StageManagerBase : MonoBehaviour
         // クリア時のカメラ設定
         targetVcam.gameObject.SetActive(true);
 
-        if (targetVcam.Follow != null)
+        if (vcamTarget != null)
         {
+            targetVcam.Follow = vcamTarget.transform;
             targetVcam.Priority = 50; // TargetVcamの優先度を上げる
             targetVcam.Follow = vcamTarget.transform;
             targetVcam.LookAt = vcamTarget.transform;
@@ -173,10 +179,7 @@ public class StageManagerBase : MonoBehaviour
             stageUIManager.ShowGameClearPanel(starRating);
         }
 
-        // StageClear後のカメラ優先順位リセット
-        targetVcam.Priority = 0; // TargetVcamの優先度を下げる
-        mainVirtualCamera.Priority = 10; // MainVirtualCameraの優先度を上げる
-        Time.timeScale = 1f;
+        ResetStageSettings();
     }
 
     public void RemoveTarget(MonoBehaviour target)
@@ -185,5 +188,18 @@ public class StageManagerBase : MonoBehaviour
         {
             targets.Remove(target);
         }
+    }
+
+    public void ResetStageSettings()
+    {
+        Time.timeScale = 1f;
+        isGameCleared = false;
+        isGameOver = false;
+        isGameEnded = false;
+        isStageSetupComplete = false;
+
+        // StageClear後のカメラ優先順位リセット
+        targetVcam.Priority = 0; // TargetVcamの優先度を下げる
+        mainVirtualCamera.Priority = 10; // MainVirtualCameraの優先度を上げる
     }
 }

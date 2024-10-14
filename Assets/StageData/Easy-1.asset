@@ -26,7 +26,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: -0.007071012, y: -0.175, z: 1.109}
+    position: {x: -0.007071012, y: -0.175, z: 1.5}
     rotation: {x: 0, y: 0, z: 0.62647456, w: 0.7794419}
     scale: {x: 0.71009, y: 10.71009, z: 10.71009}
   - assetReference:
@@ -37,6 +37,15 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: -10}
     rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
     scale: {x: 1, y: 1, z: 1}
+  - assetReference:
+      m_AssetGUID: c34bfd1bfe12c1947b036bb691ef50fc
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 10, z: -12}
+    rotation: {x: 0.6427876, y: 0, z: 0, w: 0.76604444}
+    scale: {x: 1, y: 1, z: 1}
   maxArrowCount: 7
   threeStarThreshold: 1
   twoStarThreshold: 3
+  pointLightIntensity: 100

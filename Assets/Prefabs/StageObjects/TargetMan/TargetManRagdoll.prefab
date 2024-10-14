@@ -5297,7 +5297,7 @@ GameObject:
   - component: {fileID: 1307421616943719834}
   m_Layer: 0
   m_Name: TargetManRagdoll
-  m_TagString: Untagged
+  m_TagString: Out
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

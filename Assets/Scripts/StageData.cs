@@ -18,4 +18,5 @@ public class StageData : ScriptableObject
     public int maxArrowCount = 5;             // ステージで使用可能な矢の本数
     public int threeStarThreshold = 1;        // 3つ星のためのミス許容数
     public int twoStarThreshold = 3;          // 2つ星のためのミス許容数
+    public float pointLightIntensity = 1.0f;  // ポイントライトの明るさ
 }

@@ -5,15 +5,19 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class StageSelectManager : MonoBehaviour
 {
+
     [SerializeField] private Button easy1StageButton; // ステージボタン
+    [SerializeField] private Button easy2StageButton; // ステージボタン
 
     private void Start()
     {
         // ボタンが押されたときに「Easy-1」ステージをロード
         easy1StageButton.onClick.AddListener(() => LoadStage("Easy-1"));
+        easy2StageButton.onClick.AddListener(() => LoadStage("Easy-2"));
+
     }
 
-    private void LoadStage(string stageName)
+    public void LoadStage(string stageName)
     {
         // Addressables から stageName に基づいて StageData をロード
         Addressables.LoadAssetAsync<StageData>(stageName).Completed += OnStageDataLoaded;

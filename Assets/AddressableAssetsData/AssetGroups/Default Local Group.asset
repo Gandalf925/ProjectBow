@@ -27,6 +27,21 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33bc52e91168c584ea09c54bd2d3ec98
+    m_Address: TargetMedievalMan
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 721f10c91f718f94eb4bc99af62ef310
+    m_Address: Easy-2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c34bfd1bfe12c1947b036bb691ef50fc
+    m_Address: SpotLight
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 40bcea5ccae08634ea9c935ffde17036, type: 2}
   m_SchemaSet:

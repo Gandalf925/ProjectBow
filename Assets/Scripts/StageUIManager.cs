@@ -62,7 +62,8 @@ public class StageUIManager : MonoBehaviour
     // Retryボタンを押したときの処理
     private void OnRetry()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        StageLoader.Instance.UnloadStage();
+        StageLoader.Instance.LoadCurrentStage();
     }
 
     // StageSelectボタンを押したときの処理

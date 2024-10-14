@@ -5,6 +5,7 @@ using UnityEngine;
 public class TargetObject : MonoBehaviour
 {
     [SerializeField] StageManagerBase stageManager;
+    [SerializeField] GameObject targetFragment;
 
     private void Start()
     {
@@ -15,16 +16,14 @@ public class TargetObject : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Arrow"))
         {
-            foreach (ContactPoint contact in collision.contacts)
-            {
-                HandleHit();
-            }
+            HandleHit();
         }
     }
 
     private void HandleHit()
     {
-        // stageManager.vcamTarget = this.gameObject;
+        GameObject vcamTarget = Instantiate(targetFragment, transform.position, transform.rotation);
+        stageManager.vcamTarget = vcamTarget;
         Destroy(gameObject);
     }
 
