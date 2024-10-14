@@ -10,6 +10,9 @@ public class StageSelectManager : MonoBehaviour
 
     [SerializeField] private Button easy1StageButton; // ステージボタン
     [SerializeField] private Button easy2StageButton; // ステージボタン
+    [SerializeField] private Button easy3StageButton; // ステージボタン
+    [SerializeField] private Button easy4StageButton; // ステージボタン
+    [SerializeField] private Button easy5StageButton; // ステージボタン
     TransitionAnimator transitionAnimator;
 
     private void Start()
@@ -19,6 +22,9 @@ public class StageSelectManager : MonoBehaviour
 
         easy1StageButton.onClick.AddListener(() => StartCoroutine(LoadStage("Easy-1")));
         easy2StageButton.onClick.AddListener(() => StartCoroutine(LoadStage("Easy-2")));
+        easy3StageButton.onClick.AddListener(() => StartCoroutine(LoadStage("Easy-3")));
+        easy4StageButton.onClick.AddListener(() => StartCoroutine(LoadStage("Easy-4")));
+        easy5StageButton.onClick.AddListener(() => StartCoroutine(LoadStage("Easy-5")));
 
     }
 

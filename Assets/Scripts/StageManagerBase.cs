@@ -7,6 +7,7 @@ using System;
 public class StageManagerBase : MonoBehaviour
 {
     private StageUIManager stageUIManager;
+    private StageData stageData; // StageDataを格納するための変数
     public string stageName;
     public string missionTitle;
 
@@ -36,23 +37,66 @@ public class StageManagerBase : MonoBehaviour
     private int threeStarThreshold;
     private int twoStarThreshold;
 
-    // 初期化処理：ステージデータをセット
-    public void Initialize(StageData stageData)
-    {
-        bowCount = stageData.maxArrowCount;
-        stageName = stageData.name;
-        missionTitle = stageData.missionTitle;
-        initialBowCount = bowCount;
-        threeStarThreshold = stageData.threeStarThreshold;
-        twoStarThreshold = stageData.twoStarThreshold;
-        pointLight.intensity = stageData.pointLightIntensity;
+    // クリア条件に関連するパラメータ
+    public ClearConditionType clearConditionType;
+    public GameObject specificTarget;
+    public string specificPartName;
+    private float timeLimit;
+    private int requiredHitsInRow;
+    private List<GameObject> orderedTargets;
+    private int currentOrderedTargetIndex = 0;
+    private float startTime;
+    private int consecutiveHits = 0;
+    bool isHitSpecificPart = false;
+    bool isNonWeakPointHit = false;
 
+    // 初期化処理：ステージデータをセット
+    public void Initialize(StageData data)
+    {
+        stageData = data;
+        bowCount = data.maxArrowCount;
+        stageName = data.name;
+        missionTitle = data.missionTitle;
+        initialBowCount = bowCount;
+        threeStarThreshold = data.threeStarThreshold;
+        twoStarThreshold = data.twoStarThreshold;
+        pointLight.intensity = data.pointLightIntensity;
+
+        clearConditionType = data.clearConditionType;
+
+        if (clearConditionType == ClearConditionType.HitSpecificPart)
+        {
+            specificPartName = data.specificPartName;
+        }
+
+        if (clearConditionType == ClearConditionType.HitInOrder)
+        {
+            orderedTargets = data.orderedTargets;
+        }
+
+        if (clearConditionType == ClearConditionType.TimeLimit)
+        {
+            timeLimit = data.timeLimit;
+        }
+
+        if (clearConditionType == ClearConditionType.MultiHit)
+        {
+            requiredHitsInRow = data.requiredHitsInRow;
+        }
+
+        if (clearConditionType == ClearConditionType.WeakPointOnly)
+        {
+            specificPartName = data.specificPartName;
+        }
 
         SetupCameras();
         SetupBow();
 
         stageUIManager.UpdateArrowCount(bowCount);
         stageUIManager.UpdateStageInfo(stageName, missionTitle);
+
+        if (clearConditionType == ClearConditionType.TimeLimit)
+            startTime = Time.time;
     }
 
     private void SetupCameras()
@@ -97,32 +141,142 @@ public class StageManagerBase : MonoBehaviour
     {
         if (!isStageSetupComplete) return;
 
-        HandleGameInputs();
         HideUIButtons(isAiming);
 
-        if (AllTargetsCleared() && !isGameCleared)
+        CheckClearCondition();
+        CheckGameOverCondition();
+    }
+
+    private void CheckClearCondition()
+    {
+        switch (clearConditionType)
         {
+            case ClearConditionType.HitAllTargets:
+                if (AllTargetsCleared()) TriggerGameClear();
+                break;
+
+            case ClearConditionType.HitSpecificPart:
+                if (CheckHitSpecificPart()) TriggerGameClear();
+                break;
+
+            case ClearConditionType.HitInOrder:
+                if (CheckHitInOrder()) TriggerGameClear();
+                break;
+
+            case ClearConditionType.TimeLimit:
+                if (Time.time - startTime <= timeLimit && AllTargetsCleared()) TriggerGameClear();
+                break;
+
+            case ClearConditionType.MultiHit:
+                // 連続ヒット数が目標に達したかチェック
+                break;
+
+            case ClearConditionType.WeakPointOnly:
+                // 弱点のみを狙うチェック
+                if (CheckHitSpecificPart()) TriggerGameClear();
+                break;
+        }
+    }
+
+    private bool CheckHitInOrder()
+    {
+        if (currentOrderedTargetIndex >= orderedTargets.Count)
+            return true; // 全てのターゲットが順序通りにヒット済みの場合はクリア
+
+        // 現在のターゲットが次の順序であるか確認
+        GameObject currentTarget = orderedTargets[currentOrderedTargetIndex];
+        if (targets.Contains(currentTarget.GetComponent<MonoBehaviour>())) // まだターゲットがリストに残っている場合
+        {
+            return false; // 正しい順序で当たっていないため、クリア条件は達成されていない
+        }
+
+        // 正しい順序でターゲットに当たった場合、次のターゲットに進む
+        currentOrderedTargetIndex++;
+        return currentOrderedTargetIndex >= orderedTargets.Count; // すべてのターゲットが順番通りにヒットされたかを返す
+    }
+
+    private void CheckGameOverCondition()
+    {
+        switch (clearConditionType)
+        {
+            case ClearConditionType.HitAllTargets:
+                if (CheckBowCount() && !AllTargetsCleared()) TriggerGameOver(); // 矢が尽きてもターゲットが残っている
+                break;
+
+            case ClearConditionType.HitSpecificPart:
+                if (CheckBowCount()) TriggerGameOver(); // 矢が尽きてもターゲットが残っている
+                break;
+
+            case ClearConditionType.HitInOrder:
+                if (CheckBowCount() && IncorrectOrderHit()) TriggerGameOver(); // 順番通りにターゲットがヒットされていない上に矢が尽きた
+                break;
+
+            case ClearConditionType.TimeLimit:
+                if (CheckBowCount() || (Time.time - startTime > timeLimit && !AllTargetsCleared())) TriggerGameOver(); // 時間切れでターゲットが残っている
+                break;
+
+            case ClearConditionType.MultiHit:
+                if (CheckBowCount() && consecutiveHits < requiredHitsInRow) TriggerGameOver(); // 目標の連続ヒット数に達していない
+                break;
+
+            case ClearConditionType.WeakPointOnly:
+                if (CheckNonWeakPointHit()) TriggerGameOver();
+                break;
+        }
+    }
+
+    private bool IncorrectOrderHit()
+    {
+        // 順番通りにターゲットがヒットされたかを判定
+        orderedTargets[currentOrderedTargetIndex].TryGetComponent(out MonoBehaviour target);
+        return false; // 例: 実際の判定結果を返す
+    }
+
+    private bool CheckNonWeakPointHit()
+    {
+        // 弱点以外にヒットしたかの判定
+        if (isNonWeakPointHit)
+        {
+            return true; // 例: 実際の判定結果を返す
+        }
+        return false;
+    }
+
+    public void HitNonWeakPoint()
+    {
+        isNonWeakPointHit = true;
+    }
+
+
+    private bool AllTargetsCleared()
+    {
+        return targets.Count == 0;
+    }
+
+    private void TriggerGameClear()
+    {
+        if (!isGameCleared)
+        {
+            isGameCleared = true;
             StartCoroutine(GameClear());
         }
-
-        if (ShouldTriggerGameOver())
-        {
-            GameOver();
-        }
     }
 
-    private void HandleGameInputs()
+    private void TriggerGameOver()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (!isGameOver)
         {
-            StageLoader.Instance.ReloadCurrentStage();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
+            isGameEnded = true;
+            isGameOver = true;
+            stageUIManager.ShowGameOverPanel();
         }
     }
+
+    private bool CheckBowCount()
+    {
+        return bowCount <= 0 && (hitArrowCount + outArrowCount) == initialBowCount;
+    }
+
 
     private void HideUIButtons(bool isAiming)
     {
@@ -135,16 +289,6 @@ public class StageManagerBase : MonoBehaviour
             stageUIManager.ShowButtons();
         }
 
-    }
-
-    private bool AllTargetsCleared()
-    {
-        return targets.Count == 0;
-    }
-
-    private bool ShouldTriggerGameOver()
-    {
-        return bowCount <= 0 && initialBowCount == (outArrowCount + hitArrowCount) && targets.Count > 0 && !isGameOver;
     }
 
     public void OnArrowShot()
@@ -167,16 +311,6 @@ public class StageManagerBase : MonoBehaviour
         return 1;
     }
 
-    private void GameOver()
-    {
-        if (!isGameOver)
-        {
-            isGameEnded = true;
-            isGameOver = true;
-            stageUIManager.ShowGameOverPanel();
-        }
-    }
-
     private IEnumerator GameClear()
     {
         isGameEnded = true;
@@ -185,11 +319,8 @@ public class StageManagerBase : MonoBehaviour
         SetupClearCamera();
         yield return new WaitForSecondsRealtime(3f);
 
-        if (!isGameCleared)
-        {
-            isGameCleared = true;
-            stageUIManager.ShowGameClearPanel(CalculateStarRating());
-        }
+        stageUIManager.ShowGameClearPanel(CalculateStarRating());
+
 
         ResetStageSettings();
     }
@@ -209,6 +340,11 @@ public class StageManagerBase : MonoBehaviour
     {
         Time.timeScale = 1f;
         isGameCleared = isGameOver = isGameEnded = isStageSetupComplete = false;
+        isAiming = false;
+        isNonWeakPointHit = false;
+        isHitSpecificPart = false;
+        currentOrderedTargetIndex = 0;
+        outArrowCount = hitArrowCount = 0;
 
         // Reset camera priorities
         targetVcam.Priority = 0;
@@ -221,13 +357,17 @@ public class StageManagerBase : MonoBehaviour
             targets.Remove(target);
     }
 
-    internal string GetStageName()
+    private bool CheckHitSpecificPart()
     {
-        return stageName;
+        if (isHitSpecificPart)
+        {
+            return true;
+        }
+        return false;
     }
 
-    internal string GetStageMissionTitle()
+    public void HitSpecificPart()
     {
-        return missionTitle;
+        isHitSpecificPart = true;
     }
 }

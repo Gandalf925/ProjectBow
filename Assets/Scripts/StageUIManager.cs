@@ -38,6 +38,7 @@ public class StageUIManager : MonoBehaviour
 
         // ボタンのイベント設定
         retryButton.onClick.AddListener(OnRetry);
+        gameOverRetryButton.onClick.AddListener(OnRetry);
         stageSelectButton.onClick.AddListener(OnStageSelect);
         gameClearStageSelectButton.onClick.AddListener(OnStageSelect);
         gameOverStageSelectButton.onClick.AddListener(OnStageSelect);

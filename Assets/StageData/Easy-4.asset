@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd887b94df36dbf43bf42f85b8b0f882, type: 3}
-  m_Name: Easy-2
+  m_Name: Easy-4
   m_EditorClassIdentifier: 
   objects:
   - assetReference:
@@ -30,11 +30,11 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0.62647456, w: 0.7794419}
     scale: {x: 0.71009, y: 10.71009, z: 10.71009}
   - assetReference:
-      m_AssetGUID: 331c7f0d2bd10584e98c9c1acacafb8d
+      m_AssetGUID: 33bc52e91168c584ea09c54bd2d3ec98
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 0, z: 0}
+    position: {x: 0, y: 0, z: -15}
     rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
@@ -42,16 +42,16 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 10, z: -2}
+    position: {x: 0, y: 10, z: -17}
     rotation: {x: 0.6427876, y: 0, z: 0, w: 0.76604444}
     scale: {x: 1, y: 1, z: 1}
-  missionTitle: Hit
+  missionTitle: Hit Head
   maxArrowCount: 10
   threeStarThreshold: 1
   twoStarThreshold: 3
   pointLightIntensity: 50
-  clearConditionType: 0
-  specificPartName: 
+  clearConditionType: 5
+  specificPartName: Head
   timeLimit: 0
   requiredHitsInRow: 0
   orderedTargets: []

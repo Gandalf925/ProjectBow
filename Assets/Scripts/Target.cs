@@ -5,7 +5,7 @@ using UnityEngine;
 public class Target : MonoBehaviour
 {
     private TargetRagdoll targetRagdoll;
-    [SerializeField] StageManagerBase stageManager;
+    [SerializeField] private StageManagerBase stageManager;
 
     private void Start()
     {
@@ -17,26 +17,71 @@ public class Target : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Arrow"))
         {
-            // 衝突したオブジェクトが"Head"という名前か確認
-            foreach (ContactPoint contact in collision.contacts)
+            if (stageManager.clearConditionType == ClearConditionType.HitSpecificPart)
             {
-                if (contact.thisCollider.gameObject.name == "Head")
+                // 衝突した各コンタクトポイントを確認
+                foreach (ContactPoint contact in collision.contacts)
                 {
-                    // Headに当たったときの処理
-                    Vector3 hitPoint = contact.point;
-                    Vector3 hitDirection = collision.relativeVelocity.normalized;
-                    float forceMagnitude = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
+                    // StageManagerBaseのspecificPartNameと比較してチェック
+                    if (contact.thisCollider.gameObject.name == stageManager.specificPartName)
+                    {
+                        // 特定の部位に当たったときの処理
+                        Vector3 hitPoint = contact.point;
+                        Vector3 hitDirection = collision.relativeVelocity.normalized;
+                        float forceMagnitude = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
 
-                    targetRagdoll?.Hit(hitPoint, hitDirection, forceMagnitude);
-                    return; // 他の部位のチェックをスキップ
+                        targetRagdoll?.Hit(hitPoint, hitDirection, forceMagnitude);
+                        stageManager?.HitSpecificPart();
+                        return; // 他の部位のチェックをスキップ
+                    }
                 }
-                else
+            }
+            else if (stageManager.clearConditionType == ClearConditionType.WeakPointOnly)
+            {
+                // 衝突した各コンタクトポイントを確認
+                foreach (ContactPoint contact in collision.contacts)
                 {
-                    Vector3 hitPoint = contact.point;
-                    Vector3 hitDirection = collision.relativeVelocity.normalized;
-                    float forceMagnitude = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
+                    Debug.Log("Hit Weak Point" + contact.thisCollider.gameObject.name);
+                    // StageManagerBaseのspecificPartNameと比較してチェック
+                    if (contact.thisCollider.gameObject.name == stageManager.specificPartName)
+                    {
 
-                    targetRagdoll?.Hit(hitPoint, hitDirection, forceMagnitude);
+                        // 特定の部位に当たったときの処理
+                        Vector3 hitPoint = contact.point;
+                        Vector3 hitDirection = collision.relativeVelocity.normalized;
+                        float forceMagnitude = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
+
+                        targetRagdoll?.Hit(hitPoint, hitDirection, forceMagnitude);
+                        stageManager?.HitSpecificPart();
+                        return; // 他の部位のチェックをスキップ
+                    }
+                    else
+                    {
+                        // 特定の部位以外に当たったときの処理
+                        Vector3 hitPoint = contact.point;
+                        Vector3 hitDirection = collision.relativeVelocity.normalized;
+                        float forceMagnitude = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
+
+                        targetRagdoll?.Hit(hitPoint, hitDirection, forceMagnitude);
+                        stageManager?.HitNonWeakPoint();
+                        return; // 他の部位のチェックをスキップ
+                    }
+                }
+            }
+            else
+            {
+                // 衝突した各コンタクトポイントを確認
+                foreach (ContactPoint contact in collision.contacts)
+                {
+                    {
+                        // 特定の部位以外に当たったときの処理
+                        Vector3 hitPoint = contact.point;
+                        Vector3 hitDirection = collision.relativeVelocity.normalized;
+                        float forceMagnitude = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
+
+                        targetRagdoll?.Hit(hitPoint, hitDirection, forceMagnitude);
+                        return; // 他の部位のチェックをスキップ
+                    }
                 }
             }
         }
