@@ -1458,7 +1458,7 @@ GameObject:
   - component: {fileID: 2428323312294873100}
   m_Layer: 0
   m_Name: TargetBarrelFragment
-  m_TagString: Target
+  m_TagString: Out
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

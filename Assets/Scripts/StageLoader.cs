@@ -32,7 +32,7 @@ public class StageLoader : MonoBehaviour
         // StageBase シーンをロードしてからオブジェクトを読み込む
         StartCoroutine(LoadStageSceneAsync("StageBase"));
     }
-    public void LoadCurrentStage()
+    public void ReloadCurrentStage()
     {
         StartCoroutine(LoadStageSceneAsync("StageBase"));
     }

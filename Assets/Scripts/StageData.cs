@@ -15,6 +15,7 @@ public class StageObjectData
 public class StageData : ScriptableObject
 {
     public List<StageObjectData> objects;     // ステージに配置するオブジェクトのリスト
+    public string missionTitle;               // ミッションのタイトル
     public int maxArrowCount = 5;             // ステージで使用可能な矢の本数
     public int threeStarThreshold = 1;        // 3つ星のためのミス許容数
     public int twoStarThreshold = 3;          // 2つ星のためのミス許容数

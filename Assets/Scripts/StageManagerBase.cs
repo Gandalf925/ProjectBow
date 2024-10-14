@@ -1,78 +1,94 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
+using System;
 
 public class StageManagerBase : MonoBehaviour
 {
     private StageUIManager stageUIManager;
-    private string stageName;
+    public string stageName;
+    public string missionTitle;
+
+    [Header("Components")]
     [SerializeField] private BowController bow;
-    [SerializeField] private Cinemachine.CinemachineVirtualCamera targetVcam;
-    [SerializeField] private Cinemachine.CinemachineVirtualCamera mainVirtualCamera;
+    [SerializeField] private CinemachineVirtualCamera targetVcam;
+    [SerializeField] private CinemachineVirtualCamera mainVirtualCamera;
+    [SerializeField] private Light pointLight;
+
+    [Header("Game Settings")]
     public GameObject vcamTarget;
-
     public List<MonoBehaviour> targets;
-    [SerializeField] Light pointLight;
 
-    public int bowCount;
+    // Game stats
     private int initialBowCount;
     private int outArrowCount = 0;
     private int hitArrowCount = 0;
 
+    public int bowCount;
+    public bool isAiming = false;
     public bool isGameCleared = false;
-    private bool isGameOver = false;
     public bool isGameEnded = false;
+    private bool isGameOver = false;
     private bool isStageSetupComplete = false;
 
+    // Star rating thresholds
     private int threeStarThreshold;
     private int twoStarThreshold;
 
-    // ステージデータを受け取るメソッド
+    // 初期化処理：ステージデータをセット
     public void Initialize(StageData stageData)
     {
         bowCount = stageData.maxArrowCount;
-        initialBowCount = bowCount;
         stageName = stageData.name;
+        missionTitle = stageData.missionTitle;
+        initialBowCount = bowCount;
         threeStarThreshold = stageData.threeStarThreshold;
         twoStarThreshold = stageData.twoStarThreshold;
         pointLight.intensity = stageData.pointLightIntensity;
 
-        // カメラの優先順位をリセット
-        mainVirtualCamera = FindObjectOfType<CameraController>().GetComponent<Cinemachine.CinemachineVirtualCamera>();
 
+        SetupCameras();
+        SetupBow();
+
+        stageUIManager.UpdateArrowCount(bowCount);
+        stageUIManager.UpdateStageInfo(stageName, missionTitle);
+    }
+
+    private void SetupCameras()
+    {
+        mainVirtualCamera = FindObjectOfType<CameraController>().GetComponent<CinemachineVirtualCamera>();
+        targetVcam.Priority = 0;
+        mainVirtualCamera.Priority = 10;
+    }
+
+    private void SetupBow()
+    {
         bow = FindObjectOfType<BowController>();
         bow.transform.SetParent(Camera.main.transform);
         bow.transform.localPosition = new Vector3(0f, -0.175f, 1.5f);
-        bow.transform.localRotation = Quaternion.Euler(0, 0, 77.5810089f);
+        bow.transform.localRotation = Quaternion.Euler(0, 0, 77.58f);
         bow.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-
-        targetVcam.Priority = 0; // TargetVcamの優先度を低く設定
-        mainVirtualCamera.Priority = 10; // MainVirtualCameraの優先度を高く設定
     }
 
     private void Start()
     {
         stageUIManager = FindObjectOfType<StageUIManager>();
-        stageUIManager.UpdateArrowCount(bowCount);
-
-        StartCoroutine(SetupStage());
+        StartCoroutine(SetupStageTargets());
     }
 
-    private IEnumerator SetupStage()
+    private IEnumerator SetupStageTargets()
     {
         yield return new WaitForSeconds(0.5f);
+
         GameObject[] targetObjects = GameObject.FindGameObjectsWithTag("Target");
         targets = new List<MonoBehaviour>();
-
         foreach (var targetObject in targetObjects)
         {
             MonoBehaviour targetComponent = targetObject.GetComponent<MonoBehaviour>();
             if (targetComponent != null)
-            {
                 targets.Add(targetComponent);
-            }
         }
-
         isStageSetupComplete = true;
         stageUIManager.TransitionIn();
     }
@@ -81,26 +97,54 @@ public class StageManagerBase : MonoBehaviour
     {
         if (!isStageSetupComplete) return;
 
+        HandleGameInputs();
+        HideUIButtons(isAiming);
+
+        if (AllTargetsCleared() && !isGameCleared)
+        {
+            StartCoroutine(GameClear());
+        }
+
+        if (ShouldTriggerGameOver())
+        {
+            GameOver();
+        }
+    }
+
+    private void HandleGameInputs()
+    {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            StageLoader.Instance.UnloadStage();
-            StageLoader.Instance.LoadCurrentStage();
+            StageLoader.Instance.ReloadCurrentStage();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
         }
+    }
 
-        if (targets.Count == 0 && !isGameCleared)
+    private void HideUIButtons(bool isAiming)
+    {
+        if (isAiming || isGameEnded)
         {
-            StartCoroutine(GameClear());
+            stageUIManager.HideButtons();
+        }
+        else
+        {
+            stageUIManager.ShowButtons();
         }
 
-        if (bowCount <= 0 && initialBowCount == (outArrowCount + hitArrowCount) && targets.Count > 0 && !isGameOver)
-        {
-            GameOver();
-        }
+    }
+
+    private bool AllTargetsCleared()
+    {
+        return targets.Count == 0;
+    }
+
+    private bool ShouldTriggerGameOver()
+    {
+        return bowCount <= 0 && initialBowCount == (outArrowCount + hitArrowCount) && targets.Count > 0 && !isGameOver;
     }
 
     public void OnArrowShot()
@@ -109,41 +153,21 @@ public class StageManagerBase : MonoBehaviour
         stageUIManager.UpdateArrowCount(bowCount);
     }
 
-    public void CountOutArrow()
-    {
-        outArrowCount++;
-    }
+    public void CountOutArrow() => outArrowCount++;
 
-    public void CountHitArrow()
-    {
-        hitArrowCount++;
-    }
+    public void CountHitArrow() => hitArrowCount++;
 
     private int CalculateStarRating()
     {
+        if (targets.Count > 0) return 0; // All targets must be hit for any rating
+
         int missedShots = outArrowCount;
-        bool allTargetsHit = targets.Count == 0;
-
-        if (!allTargetsHit)
-        {
-            return 0;
-        }
-
-        if (missedShots <= threeStarThreshold)
-        {
-            return 3;
-        }
-        else if (missedShots <= twoStarThreshold)
-        {
-            return 2;
-        }
-        else
-        {
-            return 1;
-        }
+        if (missedShots <= threeStarThreshold) return 3;
+        if (missedShots <= twoStarThreshold) return 2;
+        return 1;
     }
 
-    public void GameOver()
+    private void GameOver()
     {
         if (!isGameOver)
         {
@@ -153,54 +177,57 @@ public class StageManagerBase : MonoBehaviour
         }
     }
 
-    public IEnumerator GameClear()
+    private IEnumerator GameClear()
     {
         isGameEnded = true;
         bow.gameObject.SetActive(false);
 
-        // クリア時のカメラ設定
-        targetVcam.gameObject.SetActive(true);
-
-        if (vcamTarget != null)
-        {
-            targetVcam.Follow = vcamTarget.transform;
-            targetVcam.Priority = 50; // TargetVcamの優先度を上げる
-            targetVcam.Follow = vcamTarget.transform;
-            targetVcam.LookAt = vcamTarget.transform;
-            targetVcam.transform.position = vcamTarget.transform.position + targetVcam.GetCinemachineComponent<Cinemachine.CinemachineTransposer>().m_FollowOffset;
-        }
-
+        SetupClearCamera();
         yield return new WaitForSecondsRealtime(3f);
-        Time.timeScale = 0f;
 
         if (!isGameCleared)
         {
             isGameCleared = true;
-            int starRating = CalculateStarRating();
-            stageUIManager.ShowGameClearPanel(starRating);
+            stageUIManager.ShowGameClearPanel(CalculateStarRating());
         }
 
         ResetStageSettings();
     }
 
-    public void RemoveTarget(MonoBehaviour target)
+    private void SetupClearCamera()
     {
-        if (targets.Contains(target))
+        if (vcamTarget != null)
         {
-            targets.Remove(target);
+            targetVcam.Priority = 50;
+            targetVcam.Follow = vcamTarget.transform;
+            targetVcam.LookAt = vcamTarget.transform;
+            targetVcam.transform.position = vcamTarget.transform.position + targetVcam.GetCinemachineComponent<Cinemachine.CinemachineTransposer>().m_FollowOffset;
         }
     }
 
-    public void ResetStageSettings()
+    private void ResetStageSettings()
     {
         Time.timeScale = 1f;
-        isGameCleared = false;
-        isGameOver = false;
-        isGameEnded = false;
-        isStageSetupComplete = false;
+        isGameCleared = isGameOver = isGameEnded = isStageSetupComplete = false;
 
-        // StageClear後のカメラ優先順位リセット
-        targetVcam.Priority = 0; // TargetVcamの優先度を下げる
-        mainVirtualCamera.Priority = 10; // MainVirtualCameraの優先度を上げる
+        // Reset camera priorities
+        targetVcam.Priority = 0;
+        mainVirtualCamera.Priority = 10;
+    }
+
+    public void RemoveTarget(MonoBehaviour target)
+    {
+        if (targets.Contains(target))
+            targets.Remove(target);
+    }
+
+    internal string GetStageName()
+    {
+        return stageName;
+    }
+
+    internal string GetStageMissionTitle()
+    {
+        return missionTitle;
     }
 }

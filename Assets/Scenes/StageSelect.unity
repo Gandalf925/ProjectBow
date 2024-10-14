@@ -176,7 +176,8 @@ Material:
   m_Shader: {fileID: 4800000, guid: 591bed30147ab4327891d06acba97187, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - GRADIENT_OPACITY
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -189,7 +190,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _GradientTex:
-        m_Texture: {fileID: 1233729164}
+        m_Texture: {fileID: 1337740858}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -221,7 +222,7 @@ Material:
     - _ToonIntensity: 1
     - _VignetteIntensity: 0
     m_Colors:
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &319235862
@@ -742,52 +743,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 932355572}
   m_CullTransparentMesh: 1
---- !u!28 &1233729164
-Texture2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 3
-  m_Width: 256
-  m_Height: 1
-  m_CompleteImageSize: 2044
-  m_MipsStripped: 0
-  m_TextureFormat: 4
-  m_MipCount: 9
-  m_IsReadable: 1
-  m_IsPreProcessed: 0
-  m_IgnoreMipmapLimit: 1
-  m_MipmapLimitGroupName: 
-  m_StreamingMipmaps: 0
-  m_StreamingMipmapsPriority: 0
-  m_VTOnly: 0
-  m_AlphaIsTransparency: 0
-  m_ImageCount: 1
-  m_TextureDimension: 2
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_LightmapFormat: 0
-  m_ColorSpace: 1
-  m_PlatformBlob: 
-  image data: 2044
-  _typelessdata: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-  m_StreamData:
-    serializedVersion: 2
-    offset: 0
-    size: 0
-    path: 
 --- !u!1 &1333671294
 GameObject:
   m_ObjectHideFlags: 0
@@ -905,6 +860,52 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!28 &1337740858
+Texture2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 3
+  m_Width: 256
+  m_Height: 1
+  m_CompleteImageSize: 2044
+  m_MipsStripped: 0
+  m_TextureFormat: 4
+  m_MipCount: 9
+  m_IsReadable: 1
+  m_IsPreProcessed: 0
+  m_IgnoreMipmapLimit: 1
+  m_MipmapLimitGroupName: 
+  m_StreamingMipmaps: 0
+  m_StreamingMipmapsPriority: 0
+  m_VTOnly: 0
+  m_AlphaIsTransparency: 0
+  m_ImageCount: 1
+  m_TextureDimension: 2
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_LightmapFormat: 0
+  m_ColorSpace: 1
+  m_PlatformBlob: 
+  image data: 2044
+  _typelessdata: ffe400ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ffe7f100ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffe79b00ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ffdbf800ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00fff36900ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ff7f1b00ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ffd5fb00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00ffd0ff00fff95000ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffff3700ffbf2900ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ffd2fd00ffd0ff00ffd0ff00ffd0ff00ffe4a700ffff3700ffff3700ffff3700ffff3700ff5f1400ff000000ff000000ff000000ff000000ff000000ff000000ffd1fe00ffd0ff00fff16f00ffff3700ffaf2500ff000000ff000000ff000000ffd0fe00fff85300ff571200ff000000ffe4a800ff2b0900ff875800ff
+  m_StreamData:
+    serializedVersion: 2
+    offset: 0
+    size: 0
+    path: 
 --- !u!1 &1360175239
 GameObject:
   m_ObjectHideFlags: 0
@@ -1056,7 +1057,7 @@ MonoBehaviour:
   type: 3
   invert: 0
   timeMultiplier: 1
-  colorMode: 0
+  colorMode: 1
   color: {r: 0, g: 0, b: 0, a: 1}
   gradient:
     serializedVersion: 2
@@ -1106,7 +1107,7 @@ MonoBehaviour:
   randomize: 0
   seed: 0
   centersCount: 16
-  texture: {fileID: 0}
+  texture: {fileID: 2800000, guid: a90a16980323b4c019b887093825bda3, type: 3}
   cellDivisions: 1
   spread: 64
   pixelization: 0

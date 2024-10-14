@@ -77,7 +77,8 @@ MonoBehaviour:
     position: {x: 0, y: 10, z: -2}
     rotation: {x: 0.6427876, y: 0, z: 0, w: 0.76604444}
     scale: {x: 1, y: 1, z: 1}
-  maxArrowCount: 5
+  missionTitle: Hit All
+  maxArrowCount: 10
   threeStarThreshold: 1
   twoStarThreshold: 3
-  pointLightIntensity: 100
+  pointLightIntensity: 50

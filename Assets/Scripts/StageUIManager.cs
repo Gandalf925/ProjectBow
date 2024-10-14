@@ -10,6 +10,8 @@ public class StageUIManager : MonoBehaviour
 {
     [Header("UI Elements")]
     [SerializeField] private TextMeshProUGUI arrowCountText;
+    [SerializeField] private TMP_Text stageNameText;
+    [SerializeField] private TMP_Text missionTitleText;
     [SerializeField] private GameObject gameClearPanel;
     [SerializeField] private GameObject gameOverPanel;
 
@@ -18,7 +20,9 @@ public class StageUIManager : MonoBehaviour
 
     [Header("Buttons")]
     [SerializeField] private Button retryButton;
+    [SerializeField] private Button stageSelectButton;
     [SerializeField] private Button gameClearStageSelectButton;
+    [SerializeField] private Button gameOverRetryButton;
     [SerializeField] private Button gameOverStageSelectButton;
     [SerializeField] GameObject blackoutPanel;
 
@@ -34,19 +38,26 @@ public class StageUIManager : MonoBehaviour
 
         // ボタンのイベント設定
         retryButton.onClick.AddListener(OnRetry);
+        stageSelectButton.onClick.AddListener(OnStageSelect);
         gameClearStageSelectButton.onClick.AddListener(OnStageSelect);
         gameOverStageSelectButton.onClick.AddListener(OnStageSelect);
 
         // ゲーム開始時はクリア・ゲームオーバーパネルは非表示
         gameClearPanel.SetActive(false);
         gameOverPanel.SetActive(false);
-
     }
 
     // 矢の残り数の表示を更新
     public void UpdateArrowCount(int count)
     {
         arrowCountText.text = "x" + count.ToString();
+    }
+
+    // ステージ名とミッションタイトルの表示を更新
+    public void UpdateStageInfo(string stageName, string missionTitle)
+    {
+        stageNameText.text = stageName;
+        missionTitleText.text = missionTitle;
     }
 
     public void ShowGameClearPanel(int starRating)
@@ -58,6 +69,18 @@ public class StageUIManager : MonoBehaviour
         {
             stars[i].enabled = i < starRating;
         }
+    }
+
+    public void HideButtons()
+    {
+        retryButton.gameObject.SetActive(false);
+        stageSelectButton.gameObject.SetActive(false);
+    }
+
+    public void ShowButtons()
+    {
+        retryButton.gameObject.SetActive(true);
+        stageSelectButton.gameObject.SetActive(true);
     }
 
     // ゲームオーバーパネルを表示
@@ -77,7 +100,7 @@ public class StageUIManager : MonoBehaviour
         TransitionOut();
         yield return new WaitForSeconds(0.3f);
         StageLoader.Instance.UnloadStage();
-        StageLoader.Instance.LoadCurrentStage();
+        StageLoader.Instance.ReloadCurrentStage();
     }
 
     // StageSelectボタンを押したときの処理
