@@ -74,6 +74,7 @@ public class StageManagerBase : MonoBehaviour
         }
 
         isStageSetupComplete = true;
+        stageUIManager.TransitionIn();
     }
 
     private void Update()

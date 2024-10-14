@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TransitionsPlus;
 
 public class StageUIManager : MonoBehaviour
 {
@@ -19,12 +20,17 @@ public class StageUIManager : MonoBehaviour
     [SerializeField] private Button retryButton;
     [SerializeField] private Button gameClearStageSelectButton;
     [SerializeField] private Button gameOverStageSelectButton;
+    [SerializeField] GameObject blackoutPanel;
 
     private StageManagerBase stageManager;
+    private TransitionAnimator transitionAnimator;
+
 
     private void Start()
     {
+        blackoutPanel.SetActive(true);
         stageManager = FindObjectOfType<StageManagerBase>();
+        transitionAnimator = FindObjectOfType<TransitionAnimator>();
 
         // ボタンのイベント設定
         retryButton.onClick.AddListener(OnRetry);
@@ -34,6 +40,7 @@ public class StageUIManager : MonoBehaviour
         // ゲーム開始時はクリア・ゲームオーバーパネルは非表示
         gameClearPanel.SetActive(false);
         gameOverPanel.SetActive(false);
+
     }
 
     // 矢の残り数の表示を更新
@@ -62,6 +69,13 @@ public class StageUIManager : MonoBehaviour
     // Retryボタンを押したときの処理
     private void OnRetry()
     {
+        StartCoroutine(Retry());
+    }
+
+    private IEnumerator Retry()
+    {
+        TransitionOut();
+        yield return new WaitForSeconds(0.3f);
         StageLoader.Instance.UnloadStage();
         StageLoader.Instance.LoadCurrentStage();
     }
@@ -69,7 +83,27 @@ public class StageUIManager : MonoBehaviour
     // StageSelectボタンを押したときの処理
     private void OnStageSelect()
     {
+        StartCoroutine(MoveStageSelect());
+    }
+
+    private IEnumerator MoveStageSelect()
+    {
+        TransitionOut();
+        yield return new WaitForSeconds(0.3f);
+
         StageLoader.Instance.UnloadStage();
         SceneManager.LoadScene("StageSelect");
+    }
+
+    public void TransitionIn()
+    {
+        transitionAnimator.profile.invert = true;
+        transitionAnimator.Play();
+        blackoutPanel.SetActive(false);
+    }
+    private void TransitionOut()
+    {
+        transitionAnimator.profile.invert = false;
+        transitionAnimator.Play();
     }
 }
