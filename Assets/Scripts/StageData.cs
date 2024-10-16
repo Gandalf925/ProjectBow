@@ -28,6 +28,7 @@ public class StageData : ScriptableObject
     public int threeStarThreshold = 1;
     public int twoStarThreshold = 3;
     public float pointLightIntensity = 1.0f;
+    public float targetVcamDuration = 3f;
 
     public ClearConditionType clearConditionType;
 

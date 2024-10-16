@@ -42,13 +42,12 @@ public class StageManagerBase : MonoBehaviour
     public GameObject specificTarget;
     public string specificPartName;
     private float timeLimit;
-    private int requiredHitsInRow;
     private List<GameObject> orderedTargets;
     private int currentOrderedTargetIndex = 0;
     private float startTime;
-    private int consecutiveHits = 0;
     bool isHitSpecificPart = false;
     bool isNonWeakPointHit = false;
+    private float targetVcamDuration;
 
     // 初期化処理：ステージデータをセット
     public void Initialize(StageData data)
@@ -61,6 +60,10 @@ public class StageManagerBase : MonoBehaviour
         threeStarThreshold = data.threeStarThreshold;
         twoStarThreshold = data.twoStarThreshold;
         pointLight.intensity = data.pointLightIntensity;
+        targetVcamDuration = data.targetVcamDuration;
+
+        SetupCameras();
+        SetupBow();
 
         clearConditionType = data.clearConditionType;
 
@@ -78,9 +81,6 @@ public class StageManagerBase : MonoBehaviour
         {
             specificPartName = data.specificPartName;
         }
-
-        SetupCameras();
-        SetupBow();
 
         stageUIManager.UpdateArrowCount(bowCount);
         stageUIManager.UpdateStageInfo(stageName, missionTitle);
@@ -113,8 +113,7 @@ public class StageManagerBase : MonoBehaviour
 
     private IEnumerator SetupStageTargets()
     {
-        yield return new WaitForSeconds(0.5f);
-
+        yield return new WaitForSeconds(1f);
         GameObject[] targetObjects = GameObject.FindGameObjectsWithTag("Target");
         targets = new List<MonoBehaviour>();
         foreach (var targetObject in targetObjects)
@@ -288,10 +287,13 @@ public class StageManagerBase : MonoBehaviour
     private IEnumerator GameClear()
     {
         isGameEnded = true;
-        bow.gameObject.SetActive(false);
+        if (bow != null)
+        {
+            bow.gameObject.SetActive(false);
+        }
 
         SetupClearCamera();
-        yield return new WaitForSecondsRealtime(3f);
+        yield return new WaitForSecondsRealtime(targetVcamDuration);
 
         stageUIManager.ShowGameClearPanel(CalculateStarRating());
 
@@ -306,7 +308,7 @@ public class StageManagerBase : MonoBehaviour
             targetVcam.Priority = 50;
             targetVcam.Follow = vcamTarget.transform;
             targetVcam.LookAt = vcamTarget.transform;
-            targetVcam.transform.position = vcamTarget.transform.position + targetVcam.GetCinemachineComponent<Cinemachine.CinemachineTransposer>().m_FollowOffset;
+            targetVcam.transform.position = vcamTarget.transform.position + targetVcam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
         }
     }
 

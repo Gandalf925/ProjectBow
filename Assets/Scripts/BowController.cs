@@ -10,6 +10,7 @@ public class BowController : MonoBehaviour
     private GameObject currentArrow; // 現在の矢
     private Animator anim;
     private StageManagerBase stageManager;
+    private bool isAiming;
 
     private void Start()
     {
@@ -23,12 +24,12 @@ public class BowController : MonoBehaviour
             return;
 
         // UIボタンを押している間はAimしない
-        if (Input.GetMouseButtonDown(0) && !IsPointerOverUI())
+        if (Input.GetMouseButtonDown(0) && !IsPointerOverUI() && !isAiming)
         {
             AimBow();
         }
 
-        if (Input.GetMouseButtonUp(0) && !IsPointerOverUI())
+        if (Input.GetMouseButtonUp(0) && !IsPointerOverUI() && isAiming)
         {
             ShootArrow();
         }
@@ -52,28 +53,40 @@ public class BowController : MonoBehaviour
 
     private void ShootArrow()
     {
-        Rigidbody rb = currentArrow.GetComponent<Rigidbody>();
-        rb.isKinematic = false; // 重力を有効にする
+        if (currentArrow == null)
+        {
+            Debug.LogError("currentArrow is null in ShootArrow");
+            return;
+        }
 
-        // 矢に設定された shootForce を適用して発射
+        Rigidbody rb = currentArrow.GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            Debug.LogError("Rigidbody is missing on currentArrow");
+            return;
+        }
+
+        rb.isKinematic = false;
         rb.AddForce(arrowSpawnPoint.forward * shootForce, ForceMode.Impulse);
 
         currentArrow.transform.SetParent(null); // 矢を弓から離す
-        anim.SetBool("isAiming", false); // 弓のアニメーションを停止
-        anim.SetTrigger(setAnimName); // 弓のアニメーションを再生
+        anim.SetBool("isAiming", false);
+        anim.SetTrigger(setAnimName);
+
         IsAimingFalse();
 
-        // StageManagerに発射回数を通知
         stageManager.OnArrowShot();
     }
 
     private void IsAimingFalse()
     {
+        isAiming = false;
         stageManager.isAiming = false;
     }
 
     private void IsAimingTrue()
     {
+        isAiming = true;
         stageManager.isAiming = true;
     }
 
