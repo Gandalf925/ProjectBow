@@ -6,9 +6,7 @@ public enum ClearConditionType
 {
     HitAllTargets,// 全ターゲットを打つ
     HitSpecificPart,// 特定ターゲットを打つ
-    HitInOrder, // 決まった順序で打つ
     TimeLimit,// 時間内に打つ
-    MultiHit,// 連続で当てる
     WeakPointOnly// 弱点のみを狙う
 }
 
@@ -38,4 +36,5 @@ public class StageData : ScriptableObject
     public float timeLimit = 60f;
     public int requiredHitsInRow = 3;
     public List<GameObject> orderedTargets; // HitInOrder用
+    public Sprite stageImage; // ステージ画像
 }

@@ -1,57 +1,68 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using TransitionsPlus;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using TransitionsPlus;
-using System.Collections;
 
 public class StageSelectManager : MonoBehaviour
 {
+    [Header("Stage Data Lists")]
+    [SerializeField] private List<StageData> easyStages;
+    [SerializeField] private List<StageData> normalStages;
+    [SerializeField] private List<StageData> hardStages;
+    [SerializeField] private List<StageData> insaneStages;
 
-    [SerializeField] private Button easy1StageButton; // ステージボタン
-    [SerializeField] private Button easy2StageButton; // ステージボタン
-    [SerializeField] private Button easy3StageButton; // ステージボタン
-    [SerializeField] private Button easy4StageButton; // ステージボタン
-    [SerializeField] private Button easy5StageButton; // ステージボタン
+    [Header("UI References")]
     TransitionAnimator transitionAnimator;
+    [SerializeField] private GameObject stageButtonPrefab; // ステージボタンのプレハブ
+    [SerializeField] private Transform container; // GridLayoutのコンテナ
 
     private void Start()
     {
         transitionAnimator = FindObjectOfType<TransitionAnimator>();
+        LoadStageButtons(easyStages); // 初期表示としてEasyのステージを表示
         TransitionIn();
-
-        easy1StageButton.onClick.AddListener(() => StartCoroutine(LoadStage("Easy-1")));
-        easy2StageButton.onClick.AddListener(() => StartCoroutine(LoadStage("Easy-2")));
-        easy3StageButton.onClick.AddListener(() => StartCoroutine(LoadStage("Easy-3")));
-        easy4StageButton.onClick.AddListener(() => StartCoroutine(LoadStage("Easy-4")));
-        easy5StageButton.onClick.AddListener(() => StartCoroutine(LoadStage("Easy-5")));
-
     }
 
-    public IEnumerator LoadStage(string stageName)
+    public void LoadStageButtons(List<StageData> stageList)
     {
+        // 既存のボタンを削除
+        foreach (Transform child in container)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // ステージデータに基づいてボタンを生成
+        foreach (var stageData in stageList)
+        {
+            GameObject buttonObj = Instantiate(stageButtonPrefab, container);
+            Button stageButton = buttonObj.GetComponent<Button>();
+
+            // ボタンの画像とクリックイベントを設定
+            Image buttonImage = buttonObj.GetComponent<Image>();
+            TMP_Text buttonText = buttonObj.GetComponentInChildren<TMP_Text>();
+            buttonImage.sprite = stageData.stageImage;
+            buttonText.text = stageData.name;
+
+            stageButton.onClick.AddListener(() => StartCoroutine(OnStageSelected(stageData)));
+        }
+    }
+
+    private IEnumerator OnStageSelected(StageData stageData)
+    {
+        // 選択したステージデータをもとにステージをロードする処理を実行
         TransitionOut();
-        yield return new WaitForSeconds(1.0f);
-
-        // Addressables から stageName に基づいて StageData をロード
-        Addressables.LoadAssetAsync<StageData>(stageName).Completed += OnStageDataLoaded;
+        yield return new WaitForSeconds(0.3f);
+        StageLoader.Instance.LoadStage("StageBase", stageData);
     }
 
-    private void OnStageDataLoaded(AsyncOperationHandle<StageData> handle)
-    {
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            StageData stageData = handle.Result;
-            // ステージデータが正常にロードできた場合に、StageLoaderを使ってステージを読み込む
-            StageLoader.Instance.LoadStage("StageBase", stageData);
-        }
-        else
-        {
-            Debug.LogError("Failed to load StageData from Addressables.");
-        }
-    }
+    public void LoadEasyStages() => LoadStageButtons(easyStages);
+    public void LoadNormalStages() => LoadStageButtons(normalStages);
+    public void LoadHardStages() => LoadStageButtons(hardStages);
+    public void LoadInsaneStages() => LoadStageButtons(insaneStages);
 
-    private void TransitionIn()
+    public void TransitionIn()
     {
         transitionAnimator.profile.invert = true;
         transitionAnimator.Play();

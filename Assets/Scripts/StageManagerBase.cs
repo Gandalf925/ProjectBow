@@ -69,19 +69,9 @@ public class StageManagerBase : MonoBehaviour
             specificPartName = data.specificPartName;
         }
 
-        if (clearConditionType == ClearConditionType.HitInOrder)
-        {
-            orderedTargets = data.orderedTargets;
-        }
-
         if (clearConditionType == ClearConditionType.TimeLimit)
         {
             timeLimit = data.timeLimit;
-        }
-
-        if (clearConditionType == ClearConditionType.MultiHit)
-        {
-            requiredHitsInRow = data.requiredHitsInRow;
         }
 
         if (clearConditionType == ClearConditionType.WeakPointOnly)
@@ -159,16 +149,8 @@ public class StageManagerBase : MonoBehaviour
                 if (CheckHitSpecificPart()) TriggerGameClear();
                 break;
 
-            case ClearConditionType.HitInOrder:
-                if (CheckHitInOrder()) TriggerGameClear();
-                break;
-
             case ClearConditionType.TimeLimit:
                 if (Time.time - startTime <= timeLimit && AllTargetsCleared()) TriggerGameClear();
-                break;
-
-            case ClearConditionType.MultiHit:
-                // 連続ヒット数が目標に達したかチェック
                 break;
 
             case ClearConditionType.WeakPointOnly:
@@ -207,20 +189,12 @@ public class StageManagerBase : MonoBehaviour
                 if (CheckBowCount()) TriggerGameOver(); // 矢が尽きてもターゲットが残っている
                 break;
 
-            case ClearConditionType.HitInOrder:
-                if (CheckBowCount() && IncorrectOrderHit()) TriggerGameOver(); // 順番通りにターゲットがヒットされていない上に矢が尽きた
-                break;
-
             case ClearConditionType.TimeLimit:
                 if (CheckBowCount() || (Time.time - startTime > timeLimit && !AllTargetsCleared())) TriggerGameOver(); // 時間切れでターゲットが残っている
                 break;
 
-            case ClearConditionType.MultiHit:
-                if (CheckBowCount() && consecutiveHits < requiredHitsInRow) TriggerGameOver(); // 目標の連続ヒット数に達していない
-                break;
-
             case ClearConditionType.WeakPointOnly:
-                if (CheckNonWeakPointHit()) TriggerGameOver();
+                if (CheckBowCount() || CheckNonWeakPointHit()) TriggerGameOver();
                 break;
         }
     }

@@ -125,6 +125,7 @@ public class StageUIManager : MonoBehaviour
         transitionAnimator.Play();
         blackoutPanel.SetActive(false);
     }
+
     private void TransitionOut()
     {
         transitionAnimator.profile.invert = false;
