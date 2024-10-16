@@ -18,7 +18,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 2, z: -20}
+    position: {x: 0, y: 1.5, z: -20}
     rotation: {x: 0, y: 0, z: 0, w: 1}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
@@ -30,7 +30,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0.62647456, w: 0.7794419}
     scale: {x: 0.71009, y: 10.71009, z: 10.71009}
   - assetReference:
-      m_AssetGUID: 33bc52e91168c584ea09c54bd2d3ec98
+      m_AssetGUID: 34e7ecd8110418d40a9076cd00254f12
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
