@@ -42,7 +42,6 @@ public class StageSelectManager : MonoBehaviour
             // ボタンの画像とクリックイベントを設定
             Image buttonImage = buttonObj.GetComponent<Image>();
             TMP_Text buttonText = buttonObj.GetComponentInChildren<TMP_Text>();
-            buttonImage.sprite = stageData.stageImage;
             buttonText.text = stageData.name;
 
             stageButton.onClick.AddListener(() => StartCoroutine(OnStageSelected(stageData)));

@@ -37,5 +37,6 @@ public class StageData : ScriptableObject
     public float timeLimit = 60f;
     public int requiredHitsInRow = 3;
     public List<GameObject> orderedTargets; // HitInOrder用
-    public Sprite stageImage; // ステージ画像
+    public Vector3 targetCameraOffset; // ステージ画像
+
 }

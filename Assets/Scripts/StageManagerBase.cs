@@ -48,6 +48,7 @@ public class StageManagerBase : MonoBehaviour
     bool isHitSpecificPart = false;
     bool isNonWeakPointHit = false;
     private float targetVcamDuration;
+    private Vector3 targetVcamOffset;
 
     // 初期化処理：ステージデータをセット
     public void Initialize(StageData data)
@@ -61,6 +62,7 @@ public class StageManagerBase : MonoBehaviour
         twoStarThreshold = data.twoStarThreshold;
         pointLight.intensity = data.pointLightIntensity;
         targetVcamDuration = data.targetVcamDuration;
+        targetVcamOffset = data.targetCameraOffset;
 
         SetupCameras();
         SetupBow();
@@ -308,7 +310,12 @@ public class StageManagerBase : MonoBehaviour
             targetVcam.Priority = 50;
             targetVcam.Follow = vcamTarget.transform;
             targetVcam.LookAt = vcamTarget.transform;
-            targetVcam.transform.position = vcamTarget.transform.position + targetVcam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+            targetVcam.transform.position = vcamTarget.transform.position;
+            var offset = targetVcam.GetCinemachineComponent<CinemachineTransposer>();
+            if (targetVcamOffset != Vector3.zero)
+            {
+                offset.m_FollowOffset = targetVcamOffset;
+            }
         }
     }
 
@@ -325,6 +332,11 @@ public class StageManagerBase : MonoBehaviour
         // Reset camera priorities
         targetVcam.Priority = 0;
         mainVirtualCamera.Priority = 10;
+        var offset = targetVcam.GetCinemachineComponent<CinemachineTransposer>();
+        if (targetVcamOffset != Vector3.zero)
+        {
+            offset.m_FollowOffset = new Vector3(2, 5, 5);
+        }
     }
 
     public void RemoveTarget(MonoBehaviour target)
