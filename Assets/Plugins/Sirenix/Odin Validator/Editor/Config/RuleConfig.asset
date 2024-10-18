@@ -21,8 +21,7 @@ MonoBehaviour:
       Sirenix.OdinValidator.Editor\",\r\n    \"ErrorSeverity\": 0,\r\n    \"WarningSeverity\":
       1,\r\n    \"IgnoredShaders\": {\r\n        \"$id\": 1,\r\n        \"$type\":
       \"1|UnityEngine.Shader[], UnityEngine.CoreModule\",\r\n        \"$rlength\":
-      1,\r\n        \"$rcontent\": [\r\n            $fstrref:\"{\\\"guid\\\":\\\"9b1e1d14d7778714391ae095571c3d4f\\\",\\\"IsBroken\\\":false,\\\"Type\\\":1,\\\"AssetPath\\\":\\\"Assets/PolygonElvenRealm/Prefabs/FX/FX_Compnents/Large_Waterfall.shader\\\",\\\"SubAsset\\\":{\\\"AssetType\\\":{\\\"TypeName\\\":\\\"\\\"},\\\"InstanceID\\\":0,\\\"Index\\\":0},\\\"Hierarchy\\\":{\\\"SubNames\\\":[],\\\"SubIndices\\\":[]},\\\"Component\\\":{\\\"ComponentIndex\\\":0,\\\"ComponentType\\\":{\\\"TypeName\\\":\\\"\\\"}},\\\"Name\\\":\\\"SyntyStudios/WaterFall\\\",\\\"ObjectType\\\":{\\\"TypeName\\\":\\\"UnityEngine.Shader,
-      UnityEngine.CoreModule\\\"}}\"\r\n        ]\r\n    }\r\n}"
+      1,\r\n        \"$rcontent\": [\r\n            null\r\n        ]\r\n    }\r\n}"
   - Enabled: 1
     EnabledOverridden: 1
     Type: Sirenix.OdinValidator.Editor.Validators.DuplicateComponentsValidator, Sirenix.OdinValidator.Editor

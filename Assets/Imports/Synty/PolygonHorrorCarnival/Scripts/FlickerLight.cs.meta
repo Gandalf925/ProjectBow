@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e6c40806c0a66534d925ad186b68f761
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 266862
+  packageName: POLYGON Horror Carnival - Low Poly 3D Art by Synty
+  packageVersion: 1.02
+  assetPath: Assets/PolygonHorrorCarnival/Scripts/FlickerLight.cs
+  uploadId: 645159

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e83548bd852acd445b13b7142b2276f1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 266862
+  packageName: POLYGON Horror Carnival - Low Poly 3D Art by Synty
+  packageVersion: 1.02
+  assetPath: Assets/PolygonHorrorCarnival/Scripts/SimpleTranslate.cs
+  uploadId: 645159
