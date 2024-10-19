@@ -28,6 +28,7 @@ public class StageUIManager : MonoBehaviour
 
     private StageManagerBase stageManager;
     private TransitionAnimator transitionAnimator;
+    private bool transitionInCalled = false;
 
 
     private void Start()
@@ -121,14 +122,23 @@ public class StageUIManager : MonoBehaviour
 
     public void TransitionIn()
     {
+        // すでに呼び出されていたら処理をスキップ
+        if (transitionInCalled) return;
+
         transitionAnimator.profile.invert = true;
         transitionAnimator.Play();
         blackoutPanel.SetActive(false);
+
+        // 呼び出し済みフラグを立てる
+        transitionInCalled = true;
     }
 
-    private void TransitionOut()
+    public void TransitionOut()
     {
         transitionAnimator.profile.invert = false;
         transitionAnimator.Play();
+
+        // フラグをリセット
+        transitionInCalled = false;
     }
 }

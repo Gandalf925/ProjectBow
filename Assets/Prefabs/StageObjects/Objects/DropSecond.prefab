@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7454130314640683172}
   m_Layer: 0
-  m_Name: Tree&AppleSecond
+  m_Name: DropSecond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -22,14 +22,6 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0, w: 1}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
-      m_AssetGUID: a0956e960b59a554aa878b0abba17d3d
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
-    position: {x: -0.007071012, y: -0.175, z: 1.5}
-    rotation: {x: 0, y: 0, z: 0.62647456, w: 0.7794419}
-    scale: {x: 0.71009, y: 10.71009, z: 10.71009}
-  - assetReference:
       m_AssetGUID: efcbded8f615042468c69830c90e8813
       m_SubObjectName: 
       m_SubObjectType: 

@@ -65,7 +65,6 @@ public class StageManagerBase : MonoBehaviour
         targetVcamOffset = data.targetCameraOffset;
 
         SetupCameras();
-        SetupBow();
 
         clearConditionType = data.clearConditionType;
 
@@ -88,7 +87,11 @@ public class StageManagerBase : MonoBehaviour
         stageUIManager.UpdateStageInfo(stageName, missionTitle);
 
         if (clearConditionType == ClearConditionType.TimeLimit)
+        {
             startTime = Time.time;
+        }
+
+        StartCoroutine(SetupStageTargets());
     }
 
     private void SetupCameras()
@@ -98,19 +101,9 @@ public class StageManagerBase : MonoBehaviour
         mainVirtualCamera.Priority = 10;
     }
 
-    private void SetupBow()
-    {
-        bow = FindObjectOfType<BowController>();
-        bow.transform.SetParent(Camera.main.transform);
-        bow.transform.localPosition = new Vector3(0f, -0.175f, 1.5f);
-        bow.transform.localRotation = Quaternion.Euler(0, 0, 77.58f);
-        bow.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-    }
-
     private void Start()
     {
         stageUIManager = FindObjectOfType<StageUIManager>();
-        StartCoroutine(SetupStageTargets());
     }
 
     private IEnumerator SetupStageTargets()
@@ -161,23 +154,6 @@ public class StageManagerBase : MonoBehaviour
         }
     }
 
-    private bool CheckHitInOrder()
-    {
-        if (currentOrderedTargetIndex >= orderedTargets.Count)
-            return true; // 全てのターゲットが順序通りにヒット済みの場合はクリア
-
-        // 現在のターゲットが次の順序であるか確認
-        GameObject currentTarget = orderedTargets[currentOrderedTargetIndex];
-        if (targets.Contains(currentTarget.GetComponent<MonoBehaviour>())) // まだターゲットがリストに残っている場合
-        {
-            return false; // 正しい順序で当たっていないため、クリア条件は達成されていない
-        }
-
-        // 正しい順序でターゲットに当たった場合、次のターゲットに進む
-        currentOrderedTargetIndex++;
-        return currentOrderedTargetIndex >= orderedTargets.Count; // すべてのターゲットが順番通りにヒットされたかを返す
-    }
-
     private void CheckGameOverCondition()
     {
         switch (clearConditionType)
@@ -198,13 +174,6 @@ public class StageManagerBase : MonoBehaviour
                 if (CheckBowCount() || CheckNonWeakPointHit()) TriggerGameOver();
                 break;
         }
-    }
-
-    private bool IncorrectOrderHit()
-    {
-        // 順番通りにターゲットがヒットされたかを判定
-        orderedTargets[currentOrderedTargetIndex].TryGetComponent(out MonoBehaviour target);
-        return false; // 例: 実際の判定結果を返す
     }
 
     private bool CheckNonWeakPointHit()

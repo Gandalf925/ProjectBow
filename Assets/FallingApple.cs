@@ -32,11 +32,6 @@ public class FallingApple : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Arrow"))
         {
-            if (targetPositionMarker != null)
-            {
-                targetPositionMarker.SetActive(false);
-            }
-
             rb.isKinematic = false;
             stageManager.vcamTarget = targetVcam;
 
