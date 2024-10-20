@@ -26,23 +26,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 0, z: -10}
-    rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
-    scale: {x: 1, y: 1, z: 1}
-  - assetReference:
-      m_AssetGUID: 443a61b9478517c4bb1b34a06134fd31
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-    scale: {x: 1, y: 1, z: 1}
-  - assetReference:
-      m_AssetGUID: 443a61b9478517c4bb1b34a06134fd31
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
-    position: {x: 0, y: 0, z: 10}
     rotation: {x: 0, y: 0, z: 0, w: 0}
     scale: {x: 1, y: 1, z: 1}
   missionTitle: Hit All

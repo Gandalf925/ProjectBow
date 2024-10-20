@@ -7,7 +7,7 @@ using System;
 public class StageManagerBase : MonoBehaviour
 {
     private StageUIManager stageUIManager;
-    private StageData stageData; // StageDataを格納するための変数
+    public StageData stageData; // StageDataを格納するための変数
     public string stageName;
     public string missionTitle;
 
@@ -42,13 +42,16 @@ public class StageManagerBase : MonoBehaviour
     public GameObject specificTarget;
     public string specificPartName;
     private float timeLimit;
-    private List<GameObject> orderedTargets;
-    private int currentOrderedTargetIndex = 0;
     private float startTime;
     bool isHitSpecificPart = false;
     bool isNonWeakPointHit = false;
     private float targetVcamDuration;
     private Vector3 targetVcamOffset;
+    private bool isTimerRunning = false; // タイマーが動作中かどうかのフラグ
+    public bool isHitCorrectTarget = false;
+    internal bool isHitNotCorrectTarget = false;
+    Sprite correctTargetPicture;
+
 
     // 初期化処理：ステージデータをセット
     public void Initialize(StageData data)
@@ -73,11 +76,6 @@ public class StageManagerBase : MonoBehaviour
             specificPartName = data.specificPartName;
         }
 
-        if (clearConditionType == ClearConditionType.TimeLimit)
-        {
-            timeLimit = data.timeLimit;
-        }
-
         if (clearConditionType == ClearConditionType.WeakPointOnly)
         {
             specificPartName = data.specificPartName;
@@ -86,9 +84,14 @@ public class StageManagerBase : MonoBehaviour
         stageUIManager.UpdateArrowCount(bowCount);
         stageUIManager.UpdateStageInfo(stageName, missionTitle);
 
-        if (clearConditionType == ClearConditionType.TimeLimit)
+        if (data.clearConditionType == ClearConditionType.HitCorrectTarget)
         {
-            startTime = Time.time;
+            correctTargetPicture = stageData.targetPicture[UnityEngine.Random.Range(0, stageData.targetPicture.Count)];
+            stageUIManager.ShowTimerUI();
+            stageUIManager.ShowTargetPicture(correctTargetPicture);
+            startTime = Time.time;  // タイマー開始
+            timeLimit = data.timeLimit;
+            isTimerRunning = true; // タイマーを動作中に設定
         }
 
         StartCoroutine(SetupStageTargets());
@@ -109,13 +112,63 @@ public class StageManagerBase : MonoBehaviour
     private IEnumerator SetupStageTargets()
     {
         yield return new WaitForSeconds(1f);
-        GameObject[] targetObjects = GameObject.FindGameObjectsWithTag("Target");
-        targets = new List<MonoBehaviour>();
-        foreach (var targetObject in targetObjects)
+
+        if (stageData.clearConditionType == ClearConditionType.HitCorrectTarget)
         {
-            MonoBehaviour targetComponent = targetObject.GetComponent<MonoBehaviour>();
-            if (targetComponent != null)
-                targets.Add(targetComponent);
+            // ステージ内のTargetSetShelfを探す
+            TargetSetShelf targetSetShelf = FindObjectOfType<TargetSetShelf>();
+
+            if (targetSetShelf == null)
+            {
+                Debug.LogError("TargetSetShelf not found in the scene!");
+                yield break;
+            }
+
+            // targetSetShelfの子オブジェクトからtargetPositionsを取得
+            List<Transform> targetPositions = new List<Transform>();
+            foreach (Transform child in targetSetShelf.transform)
+            {
+                targetPositions.Add(child);
+            }
+
+            // availablePositionsにtargetPositionsを代入
+            List<Transform> availablePositions = new List<Transform>(targetPositions);
+
+            // ターゲットプレハブをランダムに配置
+            for (int i = 0; i < stageData.targetPrefabs.Count; i++)
+            {
+                // ランダムな位置にターゲットを配置
+                int randomIndex = UnityEngine.Random.Range(0, availablePositions.Count);
+                int randomRotation = UnityEngine.Random.Range(0, 359);
+                GameObject instantiatedTarget = Instantiate(stageData.targetPrefabs[i], availablePositions[randomIndex].position, Quaternion.Euler(0, randomRotation, 0));
+                availablePositions.RemoveAt(randomIndex);
+
+                // ターゲットの名前と画像の名前が一致するものに "Target" タグを付ける
+                if (instantiatedTarget.name == correctTargetPicture.name)
+                {
+                    instantiatedTarget.tag = "Target";
+                    instantiatedTarget.AddComponent<CorrectTarget>();
+                }
+                else
+                {
+                    instantiatedTarget.tag = "Out";  // 一致しないものには別のタグを付ける
+                    instantiatedTarget.AddComponent<NotCorrectTarget>();
+                }
+            }
+        }
+        else
+        {
+
+            GameObject[] targetObjects = GameObject.FindGameObjectsWithTag("Target");
+            targets = new List<MonoBehaviour>();
+            foreach (var targetObject in targetObjects)
+            {
+                MonoBehaviour targetComponent = targetObject.GetComponent<MonoBehaviour>();
+                if (targetComponent != null)
+                {
+                    targets.Add(targetComponent);
+                }
+            }
         }
         isStageSetupComplete = true;
         stageUIManager.TransitionIn();
@@ -127,8 +180,22 @@ public class StageManagerBase : MonoBehaviour
 
         HideUIButtons(isAiming);
 
+        if (isTimerRunning)
+        {
+            UpdateTimer(); // タイマーが動作中の時だけタイマーを更新
+        }
+
         CheckClearCondition();
         CheckGameOverCondition();
+    }
+
+    private void UpdateTimer()
+    {
+        if (clearConditionType == ClearConditionType.HitCorrectTarget)
+        {
+            float timeRemaining = Mathf.Max(0, timeLimit - (Time.time - startTime));
+            stageUIManager.UpdateTimer(timeRemaining);
+        }
     }
 
     private void CheckClearCondition()
@@ -143,8 +210,8 @@ public class StageManagerBase : MonoBehaviour
                 if (CheckHitSpecificPart()) TriggerGameClear();
                 break;
 
-            case ClearConditionType.TimeLimit:
-                if (Time.time - startTime <= timeLimit && AllTargetsCleared()) TriggerGameClear();
+            case ClearConditionType.HitCorrectTarget:
+                if (isHitCorrectTarget) TriggerGameClear();
                 break;
 
             case ClearConditionType.WeakPointOnly:
@@ -159,19 +226,20 @@ public class StageManagerBase : MonoBehaviour
         switch (clearConditionType)
         {
             case ClearConditionType.HitAllTargets:
-                if (CheckBowCount() && !AllTargetsCleared()) TriggerGameOver(); // 矢が尽きてもターゲットが残っている
+                if (CheckBowCountZero() && !AllTargetsCleared()) TriggerGameOver(); // 矢が尽きてもターゲットが残っている
                 break;
 
             case ClearConditionType.HitSpecificPart:
-                if (CheckBowCount()) TriggerGameOver(); // 矢が尽きてもターゲットが残っている
+                if (CheckBowCountZero()) TriggerGameOver(); // 矢が尽きてもターゲットが残っている
                 break;
 
-            case ClearConditionType.TimeLimit:
-                if (CheckBowCount() || (Time.time - startTime > timeLimit && !AllTargetsCleared())) TriggerGameOver(); // 時間切れでターゲットが残っている
+            case ClearConditionType.HitCorrectTarget:
+                if (isHitNotCorrectTarget) TriggerGameOver();
+                if (isTimerRunning && Time.time - startTime > timeLimit) TriggerGameOver();
                 break;
 
             case ClearConditionType.WeakPointOnly:
-                if (CheckBowCount() || CheckNonWeakPointHit()) TriggerGameOver();
+                if (CheckBowCountZero() || CheckNonWeakPointHit()) TriggerGameOver();
                 break;
         }
     }
@@ -179,18 +247,11 @@ public class StageManagerBase : MonoBehaviour
     private bool CheckNonWeakPointHit()
     {
         // 弱点以外にヒットしたかの判定
-        if (isNonWeakPointHit)
-        {
-            return true; // 例: 実際の判定結果を返す
-        }
+        if (isNonWeakPointHit) return true;
         return false;
     }
 
-    public void HitNonWeakPoint()
-    {
-        isNonWeakPointHit = true;
-    }
-
+    public void HitNonWeakPoint() => isNonWeakPointHit = true;
 
     private bool AllTargetsCleared()
     {
@@ -202,6 +263,12 @@ public class StageManagerBase : MonoBehaviour
         if (!isGameCleared)
         {
             isGameCleared = true;
+            if (clearConditionType == ClearConditionType.HitCorrectTarget)
+            {
+                stageUIManager.HideTimerUI();
+                isTimerRunning = false; // タイマーを停止
+            }
+
             StartCoroutine(GameClear());
         }
     }
@@ -210,13 +277,17 @@ public class StageManagerBase : MonoBehaviour
     {
         if (!isGameOver)
         {
-            isGameEnded = true;
             isGameOver = true;
+            if (clearConditionType == ClearConditionType.HitCorrectTarget)
+            {
+                stageUIManager.HideTimerUI();
+                isTimerRunning = false; // タイマーを停止
+            }
             stageUIManager.ShowGameOverPanel();
         }
     }
 
-    private bool CheckBowCount()
+    private bool CheckBowCountZero()
     {
         return bowCount <= 0 && (hitArrowCount + outArrowCount) == initialBowCount;
     }
@@ -232,7 +303,6 @@ public class StageManagerBase : MonoBehaviour
         {
             stageUIManager.ShowButtons();
         }
-
     }
 
     public void OnArrowShot()
@@ -268,7 +338,6 @@ public class StageManagerBase : MonoBehaviour
 
         stageUIManager.ShowGameClearPanel(CalculateStarRating());
 
-
         ResetStageSettings();
     }
 
@@ -295,7 +364,10 @@ public class StageManagerBase : MonoBehaviour
         isAiming = false;
         isNonWeakPointHit = false;
         isHitSpecificPart = false;
-        currentOrderedTargetIndex = 0;
+        isHitCorrectTarget = false;
+        isHitNotCorrectTarget = false;
+        startTime = 0;
+        timeLimit = 0;
         outArrowCount = hitArrowCount = 0;
 
         // Reset camera priorities
@@ -316,15 +388,9 @@ public class StageManagerBase : MonoBehaviour
 
     private bool CheckHitSpecificPart()
     {
-        if (isHitSpecificPart)
-        {
-            return true;
-        }
+        if (isHitSpecificPart) return true;
         return false;
     }
 
-    public void HitSpecificPart()
-    {
-        isHitSpecificPart = true;
-    }
+    public void HitSpecificPart() => isHitSpecificPart = true;
 }

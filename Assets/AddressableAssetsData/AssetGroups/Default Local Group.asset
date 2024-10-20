@@ -108,7 +108,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: db8e58f48a51b84469ffb9c4dc4b3500
-    m_Address: Easy-10
+    m_Address: Easy-11
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -118,7 +118,32 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 219b92a8c82778743985b856630867e5
-    m_Address: Easy-11
+    m_Address: Easy-111
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b0d3e40b61e70224f8e60642a14f1cf0
+    m_Address: Easy-10
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf14aa9c2e77b3440ba640a20c633ac4
+    m_Address: Easy-12
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27fe8a6f0ffe10644b5115c72c30a81f
+    m_Address: TargetSetShelf
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 097f62107cce1a14fb725f05134045a7
+    m_Address: Easy-13
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71c0cae5697748543b42f5a2f19b22f7
+    m_Address: Easy-8
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

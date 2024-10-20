@@ -22,20 +22,20 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0, w: 1}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
+      m_AssetGUID: 33f264cea74c5dd4b8f416c11bb2a1b5
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
+  - assetReference:
       m_AssetGUID: c34bfd1bfe12c1947b036bb691ef50fc
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 10, z: 8}
+    position: {x: 0, y: 10, z: -3}
     rotation: {x: 0.67559016, y: 0, z: 0, w: 0.7372773}
-    scale: {x: 1, y: 1, z: 1}
-  - assetReference:
-      m_AssetGUID: d8b400dc3fe33ee4499f421fede91539
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
-    position: {x: 0, y: 0, z: 10}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
     scale: {x: 1, y: 1, z: 1}
   missionTitle: Drop
   maxArrowCount: 10
@@ -48,4 +48,4 @@ MonoBehaviour:
   timeLimit: 0
   requiredHitsInRow: 0
   orderedTargets: []
-  targetCameraOffset: {x: -3, y: 1, z: -3.4}
+  targetCameraOffset: {x: 4, y: 2, z: -1}

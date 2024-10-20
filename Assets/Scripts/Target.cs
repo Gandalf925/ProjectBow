@@ -23,7 +23,7 @@ public class Target : MonoBehaviour
                 foreach (ContactPoint contact in collision.contacts)
                 {
                     // StageManagerBaseのspecificPartNameと比較してチェック
-                    if (contact.thisCollider.gameObject.name == stageManager.specificPartName)
+                    if (contact.thisCollider.gameObject.name == stageManager.stageData.specificPartName)
                     {
                         // 特定の部位に当たったときの処理
                         Vector3 hitPoint = contact.point;
@@ -43,7 +43,7 @@ public class Target : MonoBehaviour
                 {
                     Debug.Log("Hit Weak Point" + contact.thisCollider.gameObject.name);
                     // StageManagerBaseのspecificPartNameと比較してチェック
-                    if (contact.thisCollider.gameObject.name == stageManager.specificPartName)
+                    if (contact.thisCollider.gameObject.name == stageManager.stageData.specificPartName)
                     {
 
                         // 特定の部位に当たったときの処理

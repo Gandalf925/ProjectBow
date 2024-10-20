@@ -22,30 +22,30 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0, w: 1}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
-      m_AssetGUID: 33f264cea74c5dd4b8f416c11bb2a1b5
+      m_AssetGUID: 34e7ecd8110418d40a9076cd00254f12
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
+    position: {x: 0, y: 0, z: 25}
+    rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
       m_AssetGUID: c34bfd1bfe12c1947b036bb691ef50fc
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 10, z: -3}
+    position: {x: 0, y: 10, z: 23}
     rotation: {x: 0.67559016, y: 0, z: 0, w: 0.7372773}
     scale: {x: 1, y: 1, z: 1}
-  missionTitle: Drop
+  missionTitle: Hit
   maxArrowCount: 10
   threeStarThreshold: 1
   twoStarThreshold: 3
   pointLightIntensity: 0
-  targetVcamDuration: 5
+  targetVcamDuration: 3
   clearConditionType: 0
   specificPartName: 
   timeLimit: 0
   requiredHitsInRow: 0
   orderedTargets: []
-  targetCameraOffset: {x: 4, y: 2, z: -1}
+  targetCameraOffset: {x: 0, y: 0, z: 0}

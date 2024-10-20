@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TransitionsPlus;
+using System;
 
 public class StageUIManager : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class StageUIManager : MonoBehaviour
     [Header("Stars")]
     [SerializeField] private Image[] stars; // 星のUI画像の配列
 
+    [Header("Timer UI")]
+    public TextMeshProUGUI timerText;  // 残り時間を表示するText
+
     [Header("Buttons")]
     [SerializeField] private Button retryButton;
     [SerializeField] private Button stageSelectButton;
@@ -25,6 +29,8 @@ public class StageUIManager : MonoBehaviour
     [SerializeField] private Button gameOverRetryButton;
     [SerializeField] private Button gameOverStageSelectButton;
     [SerializeField] GameObject blackoutPanel;
+    public Image targetPictureImage;
+    public GameObject targetPictureObject;
 
     private StageManagerBase stageManager;
     private TransitionAnimator transitionAnimator;
@@ -34,6 +40,9 @@ public class StageUIManager : MonoBehaviour
     private void Start()
     {
         blackoutPanel.SetActive(true);
+        targetPictureObject.gameObject.SetActive(false);
+        timerText.gameObject.SetActive(false);
+
         stageManager = FindObjectOfType<StageManagerBase>();
         transitionAnimator = FindObjectOfType<TransitionAnimator>();
 
@@ -60,6 +69,12 @@ public class StageUIManager : MonoBehaviour
     {
         stageNameText.text = stageName;
         missionTitleText.text = missionTitle;
+    }
+
+    public void ShowTargetPicture(Sprite targetPicture)
+    {
+        targetPictureImage.sprite = targetPicture;
+        targetPictureObject.gameObject.SetActive(true);
     }
 
     public void ShowGameClearPanel(int starRating)
@@ -91,6 +106,23 @@ public class StageUIManager : MonoBehaviour
         gameOverPanel.SetActive(true);
     }
 
+    public void ShowTimerUI()
+    {
+        timerText.gameObject.SetActive(true);
+    }
+
+    public void HideTimerUI()
+    {
+        timerText.gameObject.SetActive(false);
+    }
+
+    // タイマー表示を更新
+    public void UpdateTimer(float timeRemaining)
+    {
+        TimeSpan time = TimeSpan.FromSeconds(timeRemaining);
+        timerText.text = string.Format("{0:D2}:{1:D2}", time.Minutes, time.Seconds);
+    }
+
     // Retryボタンを押したときの処理
     private void OnRetry()
     {
@@ -102,7 +134,7 @@ public class StageUIManager : MonoBehaviour
         TransitionOut();
         yield return new WaitForSeconds(0.3f);
         StageLoader.Instance.UnloadStage();
-        StageLoader.Instance.ReloadCurrentStage();
+        StageLoader.Instance.LoadStage(stageManager.stageData.name, stageManager.stageData);
     }
 
     // StageSelectボタンを押したときの処理
