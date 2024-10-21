@@ -29,7 +29,7 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 0}
     scale: {x: 1, y: 1, z: 1}
-  missionTitle: Hit All
+  missionTitle: Hit
   maxArrowCount: 10
   threeStarThreshold: 1
   twoStarThreshold: 3
@@ -38,6 +38,6 @@ MonoBehaviour:
   clearConditionType: 0
   specificPartName: 
   timeLimit: 0
-  requiredHitsInRow: 0
-  orderedTargets: []
+  targetPicture: []
+  targetPrefabs: []
   targetCameraOffset: {x: 0, y: 0, z: 0}

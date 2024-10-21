@@ -26,7 +26,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 10, z: 7.5}
+    position: {x: 0, y: 15, z: 7.5}
     rotation: {x: 0.6755905, y: 0, z: 0, w: 0.73727703}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
@@ -41,7 +41,7 @@ MonoBehaviour:
   maxArrowCount: 10
   threeStarThreshold: 1
   twoStarThreshold: 3
-  pointLightIntensity: 0
+  pointLightIntensity: 100
   targetVcamDuration: 5
   clearConditionType: 0
   specificPartName: 

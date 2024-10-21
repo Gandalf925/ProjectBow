@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd887b94df36dbf43bf42f85b8b0f882, type: 3}
-  m_Name: Easy-13
+  m_Name: Easy-14
   m_EditorClassIdentifier: 
   objects:
   - assetReference:
@@ -30,18 +30,18 @@ MonoBehaviour:
     rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
-      m_AssetGUID: c34bfd1bfe12c1947b036bb691ef50fc
+      m_AssetGUID: 4332b7969c3900b44a83727550050c8a
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 6, z: -20}
-    rotation: {x: 0.25881904, y: 0, z: 0, w: 0.9659258}
+    position: {x: 2, y: 0, z: -20}
+    rotation: {x: 0, y: 0.2541801, z: 0, w: -0.9671569}
     scale: {x: 1, y: 1, z: 1}
   missionTitle: Find
   maxArrowCount: 10
   threeStarThreshold: 1
   twoStarThreshold: 3
-  pointLightIntensity: 300
+  pointLightIntensity: 0
   targetVcamDuration: 3
   clearConditionType: 3
   specificPartName: 
