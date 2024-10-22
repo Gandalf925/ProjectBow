@@ -380,7 +380,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8689040035308775546
 Transform:
   m_ObjectHideFlags: 0
@@ -2012,10 +2012,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.14
-  m_Height: 0.43
+  m_Radius: 0.10894032
+  m_Height: 0.3040531
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.017131403, y: 0.062973425, z: 0.000000002227763}
 --- !u!1 &3558360456943708986
 GameObject:
   m_ObjectHideFlags: 0
@@ -4071,7 +4071,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6318345699609904123
 Transform:
   m_ObjectHideFlags: 0

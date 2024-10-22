@@ -71,6 +71,11 @@ public class StageManagerBase : MonoBehaviour
 
         clearConditionType = data.clearConditionType;
 
+        if (data.clearConditionType == ClearConditionType.HitAllTargets)
+        {
+            if (data.timeLimit > 0) SetupTimer();
+        }
+
         if (clearConditionType == ClearConditionType.HitSpecificPart)
         {
             specificPartName = data.specificPartName;
@@ -87,14 +92,19 @@ public class StageManagerBase : MonoBehaviour
         if (data.clearConditionType == ClearConditionType.HitCorrectTarget)
         {
             correctTargetPicture = stageData.targetPicture[UnityEngine.Random.Range(0, stageData.targetPicture.Count)];
-            stageUIManager.ShowTimerUI();
             stageUIManager.ShowTargetPicture(correctTargetPicture);
-            startTime = Time.time;  // タイマー開始
-            timeLimit = data.timeLimit;
-            isTimerRunning = true; // タイマーを動作中に設定
+            SetupTimer();
         }
 
         StartCoroutine(SetupStageTargets());
+    }
+
+    private void SetupTimer()
+    {
+        stageUIManager.ShowTimerUI();
+        startTime = Time.time;  // タイマー開始
+        timeLimit = stageData.timeLimit;
+        isTimerRunning = true; // タイマーを動作中に設定
     }
 
     private void SetupCameras()
@@ -191,11 +201,9 @@ public class StageManagerBase : MonoBehaviour
 
     private void UpdateTimer()
     {
-        if (clearConditionType == ClearConditionType.HitCorrectTarget)
-        {
-            float timeRemaining = Mathf.Max(0, timeLimit - (Time.time - startTime));
-            stageUIManager.UpdateTimer(timeRemaining);
-        }
+        float timeRemaining = Mathf.Max(0, timeLimit - (Time.time - startTime));
+        stageUIManager.UpdateTimer(timeRemaining);
+
     }
 
     private void CheckClearCondition()
@@ -227,10 +235,12 @@ public class StageManagerBase : MonoBehaviour
         {
             case ClearConditionType.HitAllTargets:
                 if (CheckBowCountZero() && !AllTargetsCleared()) TriggerGameOver(); // 矢が尽きてもターゲットが残っている
+                if (isTimerRunning && Time.time - startTime > timeLimit) TriggerGameOver();
                 break;
 
             case ClearConditionType.HitSpecificPart:
                 if (CheckBowCountZero()) TriggerGameOver(); // 矢が尽きてもターゲットが残っている
+                if (isTimerRunning && Time.time - startTime > timeLimit) TriggerGameOver();
                 break;
 
             case ClearConditionType.HitCorrectTarget:
@@ -240,6 +250,7 @@ public class StageManagerBase : MonoBehaviour
 
             case ClearConditionType.WeakPointOnly:
                 if (CheckBowCountZero() || CheckNonWeakPointHit()) TriggerGameOver();
+                if (isTimerRunning && Time.time - startTime > timeLimit) TriggerGameOver();
                 break;
         }
     }

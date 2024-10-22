@@ -45,7 +45,7 @@ public class StageData : ScriptableObject
     [Tooltip("特定部位の名前を指定します")]
     public string specificPartName;   // 特定部位の名前
 
-    [ShowIf("clearConditionType", ClearConditionType.HitCorrectTarget)]
+    [ShowIf("@clearConditionType == ClearConditionType.HitAllTargets || clearConditionType == ClearConditionType.HitCorrectTarget")]
     [Tooltip("制限時間を設定します")]
     public float timeLimit = 60f;
 

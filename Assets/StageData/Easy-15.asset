@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd887b94df36dbf43bf42f85b8b0f882, type: 3}
+  m_Name: Easy-15
+  m_EditorClassIdentifier: 
+  objects:
+  - assetReference:
+      m_AssetGUID: 961c4c32811545848b67dec708696d10
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 1.5, z: -20}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
+  - assetReference:
+      m_AssetGUID: f2383b7cfcb738d42b9dc20821158aea
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+    scale: {x: 1, y: 1, z: 1}
+  missionTitle: Hit All
+  maxArrowCount: 30
+  threeStarThreshold: 1
+  twoStarThreshold: 3
+  pointLightIntensity: 0
+  targetVcamDuration: 3
+  clearConditionType: 0
+  specificPartName: 
+  timeLimit: 62
+  targetPicture:
+  - {fileID: 21300000, guid: 8a6aefa483885e54586ea269cfa117a9, type: 3}
+  - {fileID: 21300000, guid: 4aba64cd516a37e4d8ded7a29eea64f3, type: 3}
+  - {fileID: 21300000, guid: 63eddc534c1a63345947367cd7fe5266, type: 3}
+  - {fileID: 21300000, guid: 2b115418160be5e459a361258440176b, type: 3}
+  - {fileID: 21300000, guid: 2214940fddc120d4abcacdd03b31cb69, type: 3}
+  - {fileID: 21300000, guid: e99ac70e732df2c4b99f9c0452e4283b, type: 3}
+  - {fileID: 21300000, guid: 1e659f7fc08f7dc40817de962dc76970, type: 3}
+  - {fileID: 21300000, guid: 27288646b5153cd4a8bb4884e8e7c8dd, type: 3}
+  - {fileID: 21300000, guid: cca772e3925264040b8feff10d108041, type: 3}
+  targetPrefabs:
+  - {fileID: 2032224007462219212, guid: 47d718100658fb843965b4017dffdccb, type: 3}
+  - {fileID: 8316981552032084263, guid: 7f6423a2dfcad324b9eb66483b84d87e, type: 3}
+  - {fileID: 1461474560523902781, guid: 2713080e583e2ba4aa22e1234b7dfa8e, type: 3}
+  - {fileID: 585089916528097136, guid: 0f1d0138402d22546a510023bc3b6cbd, type: 3}
+  - {fileID: 5447468453494118896, guid: cebdedf2320b1054cbaaebfa9d388a96, type: 3}
+  - {fileID: 4049302515766480844, guid: 3892be36f7b981846bb0a1cf7a4f8d46, type: 3}
+  - {fileID: 7586855223360176732, guid: 26ef741f9f33d30499585d20f787a7f2, type: 3}
+  - {fileID: 5848251443962350383, guid: ff7c104c0b764554ea4bd276eec0a8da, type: 3}
+  - {fileID: 8116411705345723077, guid: 782c563cb1ed5934881012fa3820d105, type: 3}
+  targetCameraOffset: {x: 1, y: 1, z: -3}
