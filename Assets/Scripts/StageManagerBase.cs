@@ -63,9 +63,11 @@ public class StageManagerBase : MonoBehaviour
         initialBowCount = bowCount;
         threeStarThreshold = data.threeStarThreshold;
         twoStarThreshold = data.twoStarThreshold;
-        pointLight.intensity = data.pointLightIntensity;
         targetVcamDuration = data.targetVcamDuration;
         targetVcamOffset = data.targetCameraOffset;
+
+        pointLight = GameObject.FindWithTag("PointLight").GetComponent<Light>();
+        pointLight.intensity = data.pointLightIntensity;
 
         SetupCameras();
 

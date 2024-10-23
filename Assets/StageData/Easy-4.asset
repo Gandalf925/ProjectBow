@@ -37,6 +37,14 @@ MonoBehaviour:
     position: {x: 0, y: 10, z: -17}
     rotation: {x: 0.6427876, y: 0, z: 0, w: 0.76604444}
     scale: {x: 1, y: 1, z: 1}
+  - assetReference:
+      m_AssetGUID: 9f447ee1176f75f44a373feb7e661a90
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    scale: {x: 1, y: 1, z: 1}
   missionTitle: Hit The Head
   maxArrowCount: 10
   threeStarThreshold: 1
