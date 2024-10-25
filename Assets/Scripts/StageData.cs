@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using Sirenix.OdinInspector;  // Odin Inspectorの名前空間
+using Sirenix.OdinInspector;
+using UnityEngine.Rendering.LookDev;  // Odin Inspectorの名前空間
 
 public enum ClearConditionType
 {
@@ -29,11 +30,18 @@ public class StageData : ScriptableObject
     public string missionTitle;
 
     [Title("Game Settings")]
+    public SkyBoxType skyBoxType;
     public int maxArrowCount = 5;
     public int threeStarThreshold = 1;
     public int twoStarThreshold = 3;
     public float pointLightIntensity = 1.0f;
     public float targetVcamDuration = 3f;
+    public bool isWindEnabled;
+
+    [ShowIf("isWindEnabled", true)]
+    [Range(0, 20)]
+    public float maxWindStrength;
+
 
     [Title("Clear Condition Settings")]
     [EnumToggleButtons]

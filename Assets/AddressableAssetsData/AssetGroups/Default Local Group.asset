@@ -172,6 +172,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e20a9c719bb6dc145accd497bfbf6090
+    m_Address: TownStage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca87a5a0f379aae4bb6669c2c3a2fdd2
+    m_Address: Easy-16
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 40bcea5ccae08634ea9c935ffde17036, type: 2}
   m_SchemaSet:

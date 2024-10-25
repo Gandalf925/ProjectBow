@@ -7,6 +7,9 @@ TagManager:
   - Arrow
   - Target
   - Out
+  - PointLight
+  - FxTemporaire
+  - WindArea
   layers:
   - Default
   - TransparentFX

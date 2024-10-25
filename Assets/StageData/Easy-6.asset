@@ -62,6 +62,7 @@ MonoBehaviour:
     rotation: {x: 0.17364818, y: 0, z: 0, w: 0.9848077}
     scale: {x: 1, y: 1, z: 1}
   missionTitle: Hit All
+  skyBoxType: 1
   maxArrowCount: 10
   threeStarThreshold: 1
   twoStarThreshold: 3

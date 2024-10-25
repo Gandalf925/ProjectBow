@@ -22,6 +22,11 @@ public class StageUIManager : MonoBehaviour
     [Header("Timer UI")]
     public TextMeshProUGUI timerText;  // 残り時間を表示するText
 
+    [Header("Wind UI")]
+    private WindArea windArea;
+    [SerializeField] private GameObject windUI;
+    [SerializeField] private TMP_Text windStrengthText;
+
     [Header("Buttons")]
     [SerializeField] private Button retryButton;
     [SerializeField] private Button stageSelectButton;
@@ -46,6 +51,7 @@ public class StageUIManager : MonoBehaviour
         stageManager = FindObjectOfType<StageManagerBase>();
         transitionAnimator = FindObjectOfType<TransitionAnimator>();
 
+
         // ボタンのイベント設定
         retryButton.onClick.AddListener(OnRetry);
         gameOverRetryButton.onClick.AddListener(OnRetry);
@@ -56,6 +62,25 @@ public class StageUIManager : MonoBehaviour
         // ゲーム開始時はクリア・ゲームオーバーパネルは非表示
         gameClearPanel.SetActive(false);
         gameOverPanel.SetActive(false);
+
+    }
+
+    public void SetWindUI()
+    {
+        windArea = FindObjectOfType<WindArea>();
+
+        Debug.Log(windArea);
+
+        if (windArea != null)
+        {
+            windUI.SetActive(true);
+            windStrengthText = windUI.GetComponentInChildren<TMP_Text>();
+            windStrengthText.text = windArea.windStrength.ToString("F1") + "m/s";
+        }
+        else
+        {
+            windUI.SetActive(false);
+        }
     }
 
     // 矢の残り数の表示を更新

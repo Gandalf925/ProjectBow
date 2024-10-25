@@ -51,6 +51,9 @@ public class StageManagerBase : MonoBehaviour
     public bool isHitCorrectTarget = false;
     internal bool isHitNotCorrectTarget = false;
     Sprite correctTargetPicture;
+    SkyBoxType skyBoxType;
+    SkyBoxChanger skyBoxChanger;
+    WindArea windArea;
 
 
     // 初期化処理：ステージデータをセット
@@ -65,6 +68,8 @@ public class StageManagerBase : MonoBehaviour
         twoStarThreshold = data.twoStarThreshold;
         targetVcamDuration = data.targetVcamDuration;
         targetVcamOffset = data.targetCameraOffset;
+        skyBoxType = data.skyBoxType;
+
 
         pointLight = GameObject.FindWithTag("PointLight").GetComponent<Light>();
         pointLight.intensity = data.pointLightIntensity;
@@ -98,7 +103,21 @@ public class StageManagerBase : MonoBehaviour
             SetupTimer();
         }
 
+        skyBoxChanger.ChangeSkybox(skyBoxType);
+        SetWind();
+
         StartCoroutine(SetupStageTargets());
+    }
+
+    private void SetWind()
+    {
+        windArea = FindObjectOfType<WindArea>();
+
+        if (windArea != null)
+        {
+            windArea.RandomizeWindStrength(stageData.maxWindStrength);
+            stageUIManager.SetWindUI();
+        }
     }
 
     private void SetupTimer()
@@ -119,6 +138,7 @@ public class StageManagerBase : MonoBehaviour
     private void Start()
     {
         stageUIManager = FindObjectOfType<StageUIManager>();
+        skyBoxChanger = GetComponent<SkyBoxChanger>();
     }
 
     private IEnumerator SetupStageTargets()
@@ -276,7 +296,7 @@ public class StageManagerBase : MonoBehaviour
         if (!isGameCleared)
         {
             isGameCleared = true;
-            if (clearConditionType == ClearConditionType.HitCorrectTarget)
+            if (isTimerRunning)
             {
                 stageUIManager.HideTimerUI();
                 isTimerRunning = false; // タイマーを停止
@@ -291,7 +311,7 @@ public class StageManagerBase : MonoBehaviour
         if (!isGameOver)
         {
             isGameOver = true;
-            if (clearConditionType == ClearConditionType.HitCorrectTarget)
+            if (isTimerRunning)
             {
                 stageUIManager.HideTimerUI();
                 isTimerRunning = false; // タイマーを停止
