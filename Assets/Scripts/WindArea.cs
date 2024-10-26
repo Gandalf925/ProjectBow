@@ -11,6 +11,9 @@ public class WindArea : MonoBehaviour
     private void Start()
     {
         RandomizeWindDirection(); // 風の方向をランダムに設定
+
+        // パーティクルの方向を風に同期させる
+        SyncParticlesWithWind();
     }
 
     private void RandomizeWindDirection()
@@ -18,7 +21,7 @@ public class WindArea : MonoBehaviour
         // 風の方向をランダムに設定
         windDirection = new Vector3(
             UnityEngine.Random.Range(-1.0f, 1.0f),
-            UnityEngine.Random.Range(-1.0f, 1.0f),
+            0f,
             UnityEngine.Random.Range(-1.0f, 1.0f)).normalized; // 正規化
     }
 
@@ -36,9 +39,6 @@ public class WindArea : MonoBehaviour
         {
             // 力を加える
             rb.AddForce(windDirection * windStrength);
-
-            // パーティクルの方向を風に同期させる
-            SyncParticlesWithWind();
         }
     }
 
@@ -55,10 +55,20 @@ public class WindArea : MonoBehaviour
                 Vector3 normalizedWindDirection = windDirection.normalized;
 
                 // 風の力を考慮してVelocityOverLifetimeのX、Y、Zを設定
-                velocityOverLifetime.x = new ParticleSystem.MinMaxCurve(normalizedWindDirection.x * windStrength);
-                velocityOverLifetime.y = new ParticleSystem.MinMaxCurve(normalizedWindDirection.y * windStrength);
-                velocityOverLifetime.z = new ParticleSystem.MinMaxCurve(normalizedWindDirection.z * windStrength);
+                velocityOverLifetime.x = new ParticleSystem.MinMaxCurve(normalizedWindDirection.x * windStrength / 2);
+                velocityOverLifetime.y = new ParticleSystem.MinMaxCurve(normalizedWindDirection.y * windStrength / 2);
+                velocityOverLifetime.z = new ParticleSystem.MinMaxCurve(normalizedWindDirection.z * windStrength / 2);
             }
         }
+    }
+
+    public Vector3 GetWindDirection()
+    {
+        return windDirection; // 風の方向を取得
+    }
+
+    public float GetWindStrength()
+    {
+        return windStrength; // 風の強さを取得
     }
 }

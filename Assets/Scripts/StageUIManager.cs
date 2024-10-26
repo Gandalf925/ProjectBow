@@ -40,7 +40,7 @@ public class StageUIManager : MonoBehaviour
     private StageManagerBase stageManager;
     private TransitionAnimator transitionAnimator;
     private bool transitionInCalled = false;
-
+    [SerializeField] private Image windVectorImage; // 矢印のUIイメージ
 
     private void Start()
     {
@@ -76,11 +76,28 @@ public class StageUIManager : MonoBehaviour
             windUI.SetActive(true);
             windStrengthText = windUI.GetComponentInChildren<TMP_Text>();
             windStrengthText.text = windArea.windStrength.ToString("F1") + "m/s";
+            // 矢印の方向を更新
+            UpdateWindVectorDirection(windArea.GetWindDirection(), windArea.GetWindStrength());
         }
         else
         {
             windUI.SetActive(false);
         }
+    }
+
+    private void UpdateWindVectorDirection(Vector3 windDirection, float windStrength)
+    {
+        // 矢印の方向を計算
+        // 風の方向を基にQuaternionを作成
+        Quaternion rotation = Quaternion.LookRotation(windDirection);
+
+        // UIのImageを回転させるためには、Z軸を正しく向ける必要があります。
+        // 矢印が上を向くように回転を調整
+        windVectorImage.transform.rotation = Quaternion.Euler(0, 0, -rotation.eulerAngles.y); // Y軸の回転を使用
+
+        // 風の強さを考慮して矢印のスケールを調整（オプション）
+        float scaleFactor = windStrength / 3f; // 強さに基づいてスケールを調整
+        windVectorImage.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
     }
 
     // 矢の残り数の表示を更新

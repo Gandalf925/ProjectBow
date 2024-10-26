@@ -75,6 +75,7 @@ public class StageManagerBase : MonoBehaviour
         pointLight.intensity = data.pointLightIntensity;
 
         SetupCameras();
+        SetWind();
 
         clearConditionType = data.clearConditionType;
 
@@ -104,7 +105,7 @@ public class StageManagerBase : MonoBehaviour
         }
 
         skyBoxChanger.ChangeSkybox(skyBoxType);
-        SetWind();
+
 
         StartCoroutine(SetupStageTargets());
     }
