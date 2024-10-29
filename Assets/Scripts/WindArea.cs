@@ -55,9 +55,9 @@ public class WindArea : MonoBehaviour
                 Vector3 normalizedWindDirection = windDirection.normalized;
 
                 // 風の力を考慮してVelocityOverLifetimeのX、Y、Zを設定
-                velocityOverLifetime.x = new ParticleSystem.MinMaxCurve(normalizedWindDirection.x * windStrength / 2);
-                velocityOverLifetime.y = new ParticleSystem.MinMaxCurve(normalizedWindDirection.y * windStrength / 2);
-                velocityOverLifetime.z = new ParticleSystem.MinMaxCurve(normalizedWindDirection.z * windStrength / 2);
+                velocityOverLifetime.x = new ParticleSystem.MinMaxCurve(normalizedWindDirection.x * windStrength / 3);
+                velocityOverLifetime.y = new ParticleSystem.MinMaxCurve(normalizedWindDirection.y * windStrength / 3);
+                velocityOverLifetime.z = new ParticleSystem.MinMaxCurve(normalizedWindDirection.z * windStrength / 3);
             }
         }
     }

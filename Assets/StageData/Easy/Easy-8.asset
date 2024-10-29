@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd887b94df36dbf43bf42f85b8b0f882, type: 3}
-  m_Name: Easy-10
+  m_Name: Easy-8
   m_EditorClassIdentifier: 
   objects:
   - assetReference:
@@ -22,20 +22,20 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0, w: 1}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
-      m_AssetGUID: 34e7ecd8110418d40a9076cd00254f12
+      m_AssetGUID: 8db6a488fca676b409fbd02965ebbd01
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 0, z: 24}
-    rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+    position: {x: 0, y: 0, z: -10}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
       m_AssetGUID: c34bfd1bfe12c1947b036bb691ef50fc
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 10, z: 23}
-    rotation: {x: 0.67559016, y: 0, z: 0, w: 0.7372773}
+    position: {x: 0, y: 6, z: -23}
+    rotation: {x: 0.17364818, y: 0, z: 0, w: 0.9848077}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
       m_AssetGUID: 9f447ee1176f75f44a373feb7e661a90
@@ -45,24 +45,16 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 0}
     scale: {x: 1, y: 1, z: 1}
-  - assetReference:
-      m_AssetGUID: c34bfd1bfe12c1947b036bb691ef50fc
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
-    position: {x: 0, y: 5, z: -22}
-    rotation: {x: 0.42261827, y: 0, z: 0, w: 0.90630776}
-    scale: {x: 1, y: 1, z: 1}
-  missionTitle: Hit
+  missionTitle: Drop
   skyBoxType: 1
   maxArrowCount: 10
   threeStarThreshold: 1
   twoStarThreshold: 3
   pointLightIntensity: 0
-  targetVcamDuration: 3
+  targetVcamDuration: 5
   clearConditionType: 0
   specificPartName: 
   timeLimit: 0
   targetPicture: []
   targetPrefabs: []
-  targetCameraOffset: {x: 0, y: 0, z: 0}
+  targetCameraOffset: {x: -3, y: 1, z: -1}

@@ -98,7 +98,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eac43d86705675c4bbd04505adcb9c11
-    m_Address: Easy-9
+    m_Address: Easy-8
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: db8e58f48a51b84469ffb9c4dc4b3500
-    m_Address: Easy-11
+    m_Address: Easy-10
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -123,12 +123,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b0d3e40b61e70224f8e60642a14f1cf0
-    m_Address: Easy-10
+    m_Address: Easy-9
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bf14aa9c2e77b3440ba640a20c633ac4
-    m_Address: Easy-12
+    m_Address: Easy-11
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -138,7 +138,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 097f62107cce1a14fb725f05134045a7
-    m_Address: Easy-13
+    m_Address: Easy-12
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -148,7 +148,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c7eaa399aba762c4db606b77f9074110
-    m_Address: Easy-14
+    m_Address: Easy-13
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -158,7 +158,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0f7c1ee6cac45b4428231ad2d2f9fe74
-    m_Address: Easy-15
+    m_Address: Easy-14
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -178,7 +178,47 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ca87a5a0f379aae4bb6669c2c3a2fdd2
+    m_Address: Easy-15
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9681901a91d447043a4c5e88ec783946
+    m_Address: TownStage2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 60da2d9861fd50c45ab03b8982d60132
     m_Address: Easy-16
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e13d3f63cdb884a44afb5638ab3798cc
+    m_Address: TownStage3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5573da746b028741bdc81294c020ec8
+    m_Address: Easy-17
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 39945a28376798c45b4e91ff7c7b2299
+    m_Address: TargetRobotWalking5m
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c4eb48f8c7268a4891430a58c5da536
+    m_Address: TargetRobotWalking10m
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f1c34ec8269138344a2758c483b892b5
+    m_Address: WaterTank
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86f0555d569e4104ebf1a067837bea9e
+    m_Address: Easy-18
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

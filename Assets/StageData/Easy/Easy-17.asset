@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd887b94df36dbf43bf42f85b8b0f882, type: 3}
-  m_Name: Easy-16
+  m_Name: Easy-17
   m_EditorClassIdentifier: 
   objects:
   - assetReference:
-      m_AssetGUID: e20a9c719bb6dc145accd497bfbf6090
+      m_AssetGUID: e13d3f63cdb884a44afb5638ab3798cc
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 0, z: -20}
+    position: {x: 0, y: 0.1, z: -20.3}
     rotation: {x: 0, y: 0, z: 0, w: 0}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
@@ -26,23 +26,40 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 1.5, z: -20}
+    position: {x: 0, y: 30, z: -20}
     rotation: {x: 0, y: 0, z: 0, w: 1}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
-      m_AssetGUID: f2383b7cfcb738d42b9dc20821158aea
+      m_AssetGUID: 34e7ecd8110418d40a9076cd00254f12
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 0, z: 0}
+    position: {x: 0, y: 0, z: 5}
     rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
     scale: {x: 1, y: 1, z: 1}
-  missionTitle: Hit All
-  skyBoxType: 5
+  - assetReference:
+      m_AssetGUID: 2c4eb48f8c7268a4891430a58c5da536
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 0, z: 3}
+    rotation: {x: 0, y: 0.86602545, z: 0, w: 0.49999997}
+    scale: {x: 1, y: 1, z: 1}
+  - assetReference:
+      m_AssetGUID: 2c4eb48f8c7268a4891430a58c5da536
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 0, z: 8}
+    rotation: {x: 0, y: 0.70710677, z: 0, w: -0.70710677}
+    scale: {x: 1, y: 1, z: 1}
+  missionTitle: Hit
+  skyBoxType: 4
   maxArrowCount: 30
   threeStarThreshold: 1
   twoStarThreshold: 3
-  pointLightIntensity: 0
+  pointLightColor: {r: 1, g: 0.83747333, b: 0.76037735, a: 1}
+  pointLightIntensity: 1
   targetVcamDuration: 3
   isWindEnabled: 1
   maxWindStrength: 5.2

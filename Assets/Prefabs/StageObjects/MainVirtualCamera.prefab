@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 0.2
-  minVerticalAngle: -50
-  maxVerticalAngle: 60
+  minVerticalAngle: -70
+  maxVerticalAngle: 70
   minHorizontalAngle: -30
   maxHorizontalAngle: 30

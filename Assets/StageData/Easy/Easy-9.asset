@@ -22,20 +22,20 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0, w: 1}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
-      m_AssetGUID: 8db6a488fca676b409fbd02965ebbd01
+      m_AssetGUID: 34e7ecd8110418d40a9076cd00254f12
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 0, z: -10}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
+    position: {x: 0, y: 0, z: 24}
+    rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
       m_AssetGUID: c34bfd1bfe12c1947b036bb691ef50fc
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 6, z: -23}
-    rotation: {x: 0.17364818, y: 0, z: 0, w: 0.9848077}
+    position: {x: 0, y: 10, z: 23}
+    rotation: {x: 0.67559016, y: 0, z: 0, w: 0.7372773}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
       m_AssetGUID: 9f447ee1176f75f44a373feb7e661a90
@@ -45,16 +45,24 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 0}
     scale: {x: 1, y: 1, z: 1}
-  missionTitle: Drop
+  - assetReference:
+      m_AssetGUID: c34bfd1bfe12c1947b036bb691ef50fc
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 5, z: -22}
+    rotation: {x: 0.42261827, y: 0, z: 0, w: 0.90630776}
+    scale: {x: 1, y: 1, z: 1}
+  missionTitle: Hit
   skyBoxType: 1
   maxArrowCount: 10
   threeStarThreshold: 1
   twoStarThreshold: 3
   pointLightIntensity: 0
-  targetVcamDuration: 5
+  targetVcamDuration: 3
   clearConditionType: 0
   specificPartName: 
   timeLimit: 0
   targetPicture: []
   targetPrefabs: []
-  targetCameraOffset: {x: -3, y: 1, z: -1}
+  targetCameraOffset: {x: 0, y: 0, z: 0}

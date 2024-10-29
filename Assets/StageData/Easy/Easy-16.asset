@@ -10,9 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd887b94df36dbf43bf42f85b8b0f882, type: 3}
-  m_Name: Easy-13
+  m_Name: Easy-16
   m_EditorClassIdentifier: 
   objects:
+  - assetReference:
+      m_AssetGUID: 9681901a91d447043a4c5e88ec783946
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 0.1, z: -20}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    scale: {x: 1, y: 1, z: 1}
   - assetReference:
       m_AssetGUID: 961c4c32811545848b67dec708696d10
       m_SubObjectName: 
@@ -22,39 +30,26 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0, w: 1}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
-      m_AssetGUID: 27fe8a6f0ffe10644b5115c72c30a81f
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
-    position: {x: 0, y: 0, z: -10}
-    rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
-    scale: {x: 1, y: 1, z: 1}
-  - assetReference:
-      m_AssetGUID: c34bfd1bfe12c1947b036bb691ef50fc
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
-    position: {x: 0, y: 6, z: -20}
-    rotation: {x: 0.25881904, y: 0, z: 0, w: 0.9659258}
-    scale: {x: 1, y: 1, z: 1}
-  - assetReference:
-      m_AssetGUID: 9f447ee1176f75f44a373feb7e661a90
+      m_AssetGUID: 34e7ecd8110418d40a9076cd00254f12
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
+    rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
     scale: {x: 1, y: 1, z: 1}
-  missionTitle: Find
-  skyBoxType: 1
-  maxArrowCount: 10
+  missionTitle: Hit
+  skyBoxType: 4
+  maxArrowCount: 30
   threeStarThreshold: 1
   twoStarThreshold: 3
-  pointLightIntensity: 300
+  pointLightColor: {r: 1, g: 0.83747333, b: 0.76037735, a: 1}
+  pointLightIntensity: 1
   targetVcamDuration: 3
-  clearConditionType: 3
+  isWindEnabled: 1
+  maxWindStrength: 5.2
+  clearConditionType: 0
   specificPartName: 
-  timeLimit: 32
+  timeLimit: 62
   targetPicture:
   - {fileID: 21300000, guid: 8a6aefa483885e54586ea269cfa117a9, type: 3}
   - {fileID: 21300000, guid: 4aba64cd516a37e4d8ded7a29eea64f3, type: 3}
@@ -75,4 +70,4 @@ MonoBehaviour:
   - {fileID: 7586855223360176732, guid: 26ef741f9f33d30499585d20f787a7f2, type: 3}
   - {fileID: 5848251443962350383, guid: ff7c104c0b764554ea4bd276eec0a8da, type: 3}
   - {fileID: 8116411705345723077, guid: 782c563cb1ed5934881012fa3820d105, type: 3}
-  targetCameraOffset: {x: 1, y: 1, z: -3}
+  targetCameraOffset: {x: -1, y: 1.5, z: 2}

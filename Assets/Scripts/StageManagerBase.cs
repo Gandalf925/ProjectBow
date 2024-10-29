@@ -72,6 +72,7 @@ public class StageManagerBase : MonoBehaviour
 
 
         pointLight = GameObject.FindWithTag("PointLight").GetComponent<Light>();
+        pointLight.color = data.pointLightColor;
         pointLight.intensity = data.pointLightIntensity;
 
         SetupCameras();
@@ -112,9 +113,7 @@ public class StageManagerBase : MonoBehaviour
 
     private void SetWind()
     {
-        windArea = FindObjectOfType<WindArea>();
-
-        if (windArea != null)
+        if (stageData.isWindEnabled)
         {
             windArea.RandomizeWindStrength(stageData.maxWindStrength);
             stageUIManager.SetWindUI();

@@ -34,6 +34,7 @@ public class StageData : ScriptableObject
     public int maxArrowCount = 5;
     public int threeStarThreshold = 1;
     public int twoStarThreshold = 3;
+    public Color pointLightColor = Color.white;
     public float pointLightIntensity = 1.0f;
     public float targetVcamDuration = 3f;
     public bool isWindEnabled;

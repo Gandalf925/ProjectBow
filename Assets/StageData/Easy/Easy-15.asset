@@ -14,6 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objects:
   - assetReference:
+      m_AssetGUID: e20a9c719bb6dc145accd497bfbf6090
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 0.1, z: -20}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - assetReference:
       m_AssetGUID: 961c4c32811545848b67dec708696d10
       m_SubObjectName: 
       m_SubObjectType: 
@@ -29,21 +37,15 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
     scale: {x: 1, y: 1, z: 1}
-  - assetReference:
-      m_AssetGUID: 9f447ee1176f75f44a373feb7e661a90
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-    scale: {x: 1, y: 1, z: 1}
   missionTitle: Hit All
-  skyBoxType: 1
+  skyBoxType: 5
   maxArrowCount: 30
   threeStarThreshold: 1
   twoStarThreshold: 3
   pointLightIntensity: 0
   targetVcamDuration: 3
+  isWindEnabled: 1
+  maxWindStrength: 5.2
   clearConditionType: 0
   specificPartName: 
   timeLimit: 62
@@ -67,4 +69,4 @@ MonoBehaviour:
   - {fileID: 7586855223360176732, guid: 26ef741f9f33d30499585d20f787a7f2, type: 3}
   - {fileID: 5848251443962350383, guid: ff7c104c0b764554ea4bd276eec0a8da, type: 3}
   - {fileID: 8116411705345723077, guid: 782c563cb1ed5934881012fa3820d105, type: 3}
-  targetCameraOffset: {x: -2, y: 1.5, z: -2}
+  targetCameraOffset: {x: -1, y: 1.5, z: 2}

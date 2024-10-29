@@ -10,49 +10,60 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd887b94df36dbf43bf42f85b8b0f882, type: 3}
-  m_Name: Easy-14
+  m_Name: Easy-18
   m_EditorClassIdentifier: 
   objects:
-  - assetReference:
-      m_AssetGUID: 961c4c32811545848b67dec708696d10
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
-    position: {x: 0, y: 1.5, z: -20}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-    scale: {x: 1, y: 1, z: 1}
-  - assetReference:
-      m_AssetGUID: 27fe8a6f0ffe10644b5115c72c30a81f
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
-    position: {x: 0, y: 0, z: -10}
-    rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
-    scale: {x: 1, y: 1, z: 1}
-  - assetReference:
-      m_AssetGUID: 4332b7969c3900b44a83727550050c8a
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
-    position: {x: 2, y: 0, z: -20}
-    rotation: {x: 0, y: 0.2541801, z: 0, w: -0.9671569}
-    scale: {x: 1, y: 1, z: 1}
   - assetReference:
       m_AssetGUID: 9f447ee1176f75f44a373feb7e661a90
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    position: {x: 0, y: 0, z: 0}
+    position: {x: 0, y: 0.1, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 0}
     scale: {x: 1, y: 1, z: 1}
-  missionTitle: Find
-  skyBoxType: 1
+  - assetReference:
+      m_AssetGUID: 961c4c32811545848b67dec708696d10
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 1.6, z: -20}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
+  - assetReference:
+      m_AssetGUID: 2c4eb48f8c7268a4891430a58c5da536
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 5, y: 0, z: 10}
+    rotation: {x: 0, y: 0.70710677, z: 0, w: -0.70710677}
+    scale: {x: 1, y: 1, z: 1}
+  - assetReference:
+      m_AssetGUID: f1c34ec8269138344a2758c483b892b5
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 4.4, y: 0, z: -15}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - assetReference:
+      m_AssetGUID: f1c34ec8269138344a2758c483b892b5
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: -4.4, y: 0, z: -15}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    scale: {x: 1, y: 1, z: 1}
+  missionTitle: Hit
+  skyBoxType: 0
   maxArrowCount: 10
   threeStarThreshold: 1
   twoStarThreshold: 3
-  pointLightIntensity: 0
+  pointLightColor: {r: 1, g: 1, b: 1, a: 1}
+  pointLightIntensity: 500
   targetVcamDuration: 3
-  clearConditionType: 3
+  isWindEnabled: 0
+  maxWindStrength: 5.2
+  clearConditionType: 0
   specificPartName: 
   timeLimit: 32
   targetPicture:
@@ -75,4 +86,4 @@ MonoBehaviour:
   - {fileID: 7586855223360176732, guid: 26ef741f9f33d30499585d20f787a7f2, type: 3}
   - {fileID: 5848251443962350383, guid: ff7c104c0b764554ea4bd276eec0a8da, type: 3}
   - {fileID: 8116411705345723077, guid: 782c563cb1ed5934881012fa3820d105, type: 3}
-  targetCameraOffset: {x: 1, y: 1, z: -3}
+  targetCameraOffset: {x: -1, y: 1.5, z: 2}

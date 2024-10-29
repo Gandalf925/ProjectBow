@@ -47,6 +47,7 @@ public class StageUIManager : MonoBehaviour
         blackoutPanel.SetActive(true);
         targetPictureObject.gameObject.SetActive(false);
         timerText.gameObject.SetActive(false);
+        windUI.SetActive(false);
 
         stageManager = FindObjectOfType<StageManagerBase>();
         transitionAnimator = FindObjectOfType<TransitionAnimator>();
@@ -67,11 +68,7 @@ public class StageUIManager : MonoBehaviour
 
     public void SetWindUI()
     {
-        windArea = FindObjectOfType<WindArea>();
-
-        Debug.Log(windArea);
-
-        if (windArea != null)
+        if (stageManager.stageData.isWindEnabled)
         {
             windUI.SetActive(true);
             windStrengthText = windUI.GetComponentInChildren<TMP_Text>();
