@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd887b94df36dbf43bf42f85b8b0f882, type: 3}
+  m_Name: Easy-LAST
+  m_EditorClassIdentifier: 
+  objects:
+  - assetReference:
+      m_AssetGUID: 961c4c32811545848b67dec708696d10
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 1.5, z: -20}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
+  - assetReference:
+      m_AssetGUID: c34bfd1bfe12c1947b036bb691ef50fc
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 15, z: 7.5}
+    rotation: {x: 0.6755905, y: 0, z: 0, w: 0.73727703}
+    scale: {x: 1, y: 1, z: 1}
+  - assetReference:
+      m_AssetGUID: d8b400dc3fe33ee4499f421fede91539
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 0, z: 10}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - assetReference:
+      m_AssetGUID: 9f447ee1176f75f44a373feb7e661a90
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    scale: {x: 1, y: 1, z: 1}
+  missionTitle: Drop
+  skyBoxType: 1
+  maxArrowCount: 10
+  threeStarThreshold: 1
+  twoStarThreshold: 3
+  pointLightIntensity: 100
+  targetVcamDuration: 5
+  clearConditionType: 0
+  specificPartName: 
+  timeLimit: 0
+  targetPicture: []
+  targetPrefabs: []
+  targetCameraOffset: {x: -3, y: 1, z: -3.4}

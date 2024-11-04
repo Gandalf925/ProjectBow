@@ -15,81 +15,68 @@ public class Target : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Arrow"))
+        if (!collision.gameObject.CompareTag("Arrow")) return;
+
+        Debug.Log("OnCollisionEnter" + collision.gameObject.name);
+
+        foreach (ContactPoint contact in collision.contacts)
         {
-            if (stageManager.clearConditionType == ClearConditionType.HitSpecificPart)
-            {
-                // 衝突した各コンタクトポイントを確認
-                foreach (ContactPoint contact in collision.contacts)
-                {
-                    // StageManagerBaseのspecificPartNameと比較してチェック
-                    if (contact.thisCollider.gameObject.name == stageManager.stageData.specificPartName)
-                    {
-                        // 特定の部位に当たったときの処理
-                        Vector3 hitPoint = contact.point;
-                        Vector3 hitDirection = collision.relativeVelocity.normalized;
-                        float forceMagnitude = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
+            string hitPartName = contact.thisCollider.gameObject.name;
+            Vector3 hitPoint = contact.point;
+            Vector3 hitDirection = collision.relativeVelocity.normalized;
+            float forceMagnitude = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
 
-                        targetRagdoll?.Hit(hitPoint, hitDirection, forceMagnitude);
-                        stageManager?.HitSpecificPart();
-                        return; // 他の部位のチェックをスキップ
-                    }
-                }
-            }
-            else if (stageManager.clearConditionType == ClearConditionType.WeakPointOnly)
-            {
-                // 衝突した各コンタクトポイントを確認
-                foreach (ContactPoint contact in collision.contacts)
-                {
-                    Debug.Log("Hit Weak Point" + contact.thisCollider.gameObject.name);
-                    // StageManagerBaseのspecificPartNameと比較してチェック
-                    if (contact.thisCollider.gameObject.name == stageManager.stageData.specificPartName)
-                    {
-
-                        // 特定の部位に当たったときの処理
-                        Vector3 hitPoint = contact.point;
-                        Vector3 hitDirection = collision.relativeVelocity.normalized;
-                        float forceMagnitude = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
-
-                        targetRagdoll?.Hit(hitPoint, hitDirection, forceMagnitude);
-                        stageManager?.HitSpecificPart();
-                        return; // 他の部位のチェックをスキップ
-                    }
-                    else
-                    {
-                        // 特定の部位以外に当たったときの処理
-                        Vector3 hitPoint = contact.point;
-                        Vector3 hitDirection = collision.relativeVelocity.normalized;
-                        float forceMagnitude = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
-
-                        targetRagdoll?.Hit(hitPoint, hitDirection, forceMagnitude);
-                        stageManager?.HitNonWeakPoint();
-                        return; // 他の部位のチェックをスキップ
-                    }
-                }
-            }
-            else
-            {
-                // 衝突した各コンタクトポイントを確認
-                foreach (ContactPoint contact in collision.contacts)
-                {
-                    {
-                        // 特定の部位以外に当たったときの処理
-                        Vector3 hitPoint = contact.point;
-                        Vector3 hitDirection = collision.relativeVelocity.normalized;
-                        float forceMagnitude = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
-
-                        targetRagdoll?.Hit(hitPoint, hitDirection, forceMagnitude);
-                        return; // 他の部位のチェックをスキップ
-                    }
-                }
-            }
+            ProcessHit(hitPartName, hitPoint, hitDirection, forceMagnitude);
+            return;
         }
+    }
+
+    private void ProcessHit(string hitPartName, Vector3 hitPoint, Vector3 hitDirection, float forceMagnitude)
+    {
+        if (stageManager.clearConditionType == ClearConditionType.HitSpecificPart)
+        {
+            HandleSpecificPartHit(hitPartName, hitPoint, hitDirection, forceMagnitude);
+        }
+        else if (stageManager.clearConditionType == ClearConditionType.WeakPointOnly)
+        {
+            HandleWeakPointHit(hitPartName, hitPoint, hitDirection, forceMagnitude);
+        }
+        else
+        {
+            ApplyHit(hitPoint, hitDirection, forceMagnitude);
+        }
+    }
+
+    private void HandleSpecificPartHit(string hitPartName, Vector3 hitPoint, Vector3 hitDirection, float forceMagnitude)
+    {
+        if (hitPartName == stageManager.stageData.specificPartName)
+        {
+            ApplyHit(hitPoint, hitDirection, forceMagnitude);
+            stageManager?.HitSpecificPart();
+        }
+    }
+
+    private void HandleWeakPointHit(string hitPartName, Vector3 hitPoint, Vector3 hitDirection, float forceMagnitude)
+    {
+        if (hitPartName == stageManager.stageData.specificPartName)
+        {
+            ApplyHit(hitPoint, hitDirection, forceMagnitude);
+            stageManager?.HitSpecificPart();
+        }
+        else
+        {
+            ApplyHit(hitPoint, hitDirection, forceMagnitude);
+            stageManager?.HitNonWeakPoint();
+        }
+    }
+
+    private void ApplyHit(Vector3 hitPoint, Vector3 hitDirection, float forceMagnitude)
+    {
+        targetRagdoll?.Hit(hitPoint, hitDirection, forceMagnitude);
     }
 
     private void OnDestroy()
     {
-        // ターゲットが破壊される際にStageManagerから削除
         stageManager.RemoveTarget(this);
     }
 }

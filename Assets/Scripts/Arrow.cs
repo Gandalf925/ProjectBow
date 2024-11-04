@@ -6,7 +6,6 @@ public class Arrow : MonoBehaviour
     private Vector3 savedPosition;
     private Quaternion savedRotation;
     private StageManagerBase stageManager;
-    public bool isEnd = false;
 
     void Start()
     {
@@ -16,17 +15,15 @@ public class Arrow : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!isEnd && collision.gameObject.CompareTag("Target"))
+        if (collision.gameObject.CompareTag("Target"))
         {
-            isEnd = true;
+            // 「Target」に当たった場合にカウントを増やす
             stageManager.CountHitArrow();
             StickToTarget(collision);
-
         }
-        else if (!isEnd && collision.gameObject.CompareTag("Out"))
+        else if (collision.gameObject.CompareTag("Out"))
         {
             // 「Out」に当たった場合にカウントを増やす
-            isEnd = true;
             stageManager.CountOutArrow();
         }
     }

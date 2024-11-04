@@ -70,6 +70,9 @@ public class StageUIManager : MonoBehaviour
     {
         if (stageManager.stageData.isWindEnabled)
         {
+            windArea = FindObjectOfType<WindArea>();
+            if (windArea == null) return;
+
             windUI.SetActive(true);
             windStrengthText = windUI.GetComponentInChildren<TMP_Text>();
             windStrengthText.text = windArea.windStrength.ToString("F1") + "m/s";

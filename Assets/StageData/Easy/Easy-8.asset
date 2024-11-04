@@ -50,8 +50,11 @@ MonoBehaviour:
   maxArrowCount: 10
   threeStarThreshold: 1
   twoStarThreshold: 3
-  pointLightIntensity: 0
+  pointLightColor: {r: 1, g: 1, b: 1, a: 1}
+  pointLightIntensity: 100
   targetVcamDuration: 5
+  isWindEnabled: 0
+  maxWindStrength: 0
   clearConditionType: 0
   specificPartName: 
   timeLimit: 0

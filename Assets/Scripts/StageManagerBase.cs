@@ -115,6 +115,8 @@ public class StageManagerBase : MonoBehaviour
     {
         if (stageData.isWindEnabled)
         {
+            windArea = FindObjectOfType<WindArea>();
+            if (windArea == null) return;
             windArea.RandomizeWindStrength(stageData.maxWindStrength);
             stageUIManager.SetWindUI();
         }
@@ -301,6 +303,8 @@ public class StageManagerBase : MonoBehaviour
                 stageUIManager.HideTimerUI();
                 isTimerRunning = false; // タイマーを停止
             }
+
+            GameManager.Instance.MarkStageAsCleared(stageData.name);
 
             StartCoroutine(GameClear());
         }

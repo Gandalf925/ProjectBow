@@ -83,8 +83,8 @@ ModelImporter:
   assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
-  productId: 154193
-  packageName: POLYGON Apocalypse - Low Poly 3D Art by Synty
-  packageVersion: 1.17
-  assetPath: Assets/PolygonApocalypse/Prefabs/FX/Misc/FX_Sphere.fbx
-  uploadId: 633409
+  productId: 176304
+  packageName: POLYGON Military - Low Poly 3D Art by Synty
+  packageVersion: 1.09
+  assetPath: Assets/Imports/Synty/PolygonApocalypse/Prefabs/FX/Misc/FX_Sphere.fbx
+  uploadId: 633432
