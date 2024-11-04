@@ -2,11 +2,9 @@ fileFormatVersion: 2
 guid: 4071b19f780a0e346b50818188c103c2
 ShaderImporter:
   externalObjects: {}
-  defaultTextures:
-  - unity_Lightmaps: {instanceID: 0}
-  - unity_LightmapsInd: {instanceID: 0}
-  - unity_ShadowMasks: {instanceID: 0}
+  defaultTextures: []
   nonModifiableTextures: []
+  preprocessorOverride: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -14,6 +12,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 259784
   packageName: POLYGON Sci-Fi Cyber City - Low Poly 3D Art by Synty
-  packageVersion: 1.01
-  assetPath: Assets/PolygonCyberCity/Shaders/SyntyStudios_Skybox.shader
-  uploadId: 624618
+  packageVersion: 1.3.0
+  assetPath: Assets/Imports/Synty/PolygonCyberCity/Shaders/SyntyStudios_Skybox.shader
+  uploadId: 704153
