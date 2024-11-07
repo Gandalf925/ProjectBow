@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd887b94df36dbf43bf42f85b8b0f882, type: 3}
+  m_Name: Normal++
+  m_EditorClassIdentifier: 
+  objects:
+  - assetReference:
+      m_AssetGUID: 2251a4889ed70ea48b5dede5a1bd2e11
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - assetReference:
+      m_AssetGUID: 961c4c32811545848b67dec708696d10
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 1.5, z: -20}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
+  - assetReference:
+      m_AssetGUID: 45fee4e1887a0cc4faeb564be6d2b680
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: -10, y: -17, z: 45}
+    rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    scale: {x: 1, y: 1, z: 1}
+  missionTitle: Hit
+  skyBoxType: 6
+  maxArrowCount: 10
+  threeStarThreshold: 1
+  twoStarThreshold: 3
+  pointLightColor: {r: 1, g: 1, b: 1, a: 1}
+  pointLightIntensity: 1
+  targetVcamDuration: 5
+  isWindEnabled: 1
+  isRandomWindStrength: 0
+  isRandomWindDirection: 0
+  maxWindStrength: 100
+  windDirection: {x: -1, y: 0, z: 0}
+  clearConditionType: 0
+  specificPartName: 
+  timeLimit: 0
+  targetPicture: []
+  targetPrefabs: []
+  targetCameraOffset: {x: -30, y: 1, z: -34}

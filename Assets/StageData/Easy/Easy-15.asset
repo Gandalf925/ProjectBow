@@ -22,14 +22,6 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0, w: 0}
     scale: {x: 1, y: 1, z: 1}
   - assetReference:
-      m_AssetGUID: 961c4c32811545848b67dec708696d10
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
-    position: {x: 0, y: 1.5, z: -20}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-    scale: {x: 1, y: 1, z: 1}
-  - assetReference:
       m_AssetGUID: f2383b7cfcb738d42b9dc20821158aea
       m_SubObjectName: 
       m_SubObjectType: 
@@ -37,11 +29,20 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
     scale: {x: 1, y: 1, z: 1}
+  - assetReference:
+      m_AssetGUID: 961c4c32811545848b67dec708696d10
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    position: {x: 0, y: 1.5, z: -20}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
   missionTitle: Hit All
   skyBoxType: 5
   maxArrowCount: 30
   threeStarThreshold: 1
   twoStarThreshold: 3
+  pointLightColor: {r: 1, g: 1, b: 1, a: 1}
   pointLightIntensity: 0
   targetVcamDuration: 3
   isWindEnabled: 1

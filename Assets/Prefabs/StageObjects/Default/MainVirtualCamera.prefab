@@ -183,5 +183,5 @@ MonoBehaviour:
   rotationSpeed: 0.2
   minVerticalAngle: -50
   maxVerticalAngle: 60
-  minHorizontalAngle: -30
-  maxHorizontalAngle: 30
+  minHorizontalAngle: -45
+  maxHorizontalAngle: 45
