@@ -27,7 +27,7 @@ def forbid(path: str, *needles: str) -> None:
     text = file_path.read_text(encoding="utf-8")
     for needle in needles:
         if needle in text:
-            failures.append(f"{path}: forbidden legacy marker {needle!r}")
+            failures.append(f"{path}: forbidden marker {needle!r}")
 
 
 require(
@@ -65,10 +65,22 @@ require(
     "Assets/Editor/ProjectBowWebGLBuild.cs",
     "UIOrientation.Portrait",
     "PROJECT:ProjectBowPortrait",
-    "BuildPlayerContent",
-    "BundlePackingMode.PackSeparately",
     "initialMemorySize\", 128",
     "maximumMemorySize\", 1024",
+    "report.summary.totalSize",
+)
+
+forbid(
+    "Assets/Editor/ProjectBowWebGLBuild.cs",
+    "UnityEditor.AddressableAssets",
+    "BuildPlayerContent",
+    "BundlePackingMode.PackSeparately",
+    "BuildAddressables()",
+)
+
+require(
+    "Packages/manifest.json",
+    "Unity-Technologies/com.unity.cinemachine.git?path=/com.unity.cinemachine#release/2.9",
 )
 
 require(
@@ -78,12 +90,6 @@ require(
     "devicePixelRatio: Math.min",
     "TAP TO START",
     "ProjectBow is designed for portrait play",
-)
-
-require(
-    "Assets/AddressableAssetsData/AssetGroups/Schemas/Default Local Group_BundledAssetGroupSchema.asset",
-    "m_BundleMode: 1",
-    "m_UseAssetBundleCache: 1",
 )
 
 forbid(
