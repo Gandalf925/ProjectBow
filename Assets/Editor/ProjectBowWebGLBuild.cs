@@ -4,9 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
-using UnityEditor.AddressableAssets.Build;
-using UnityEditor.AddressableAssets.Settings;
-using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
@@ -15,7 +12,7 @@ public static class ProjectBowWebGLBuild
 {
     private const string TemplateName = "PROJECT:ProjectBowPortrait";
     private const string BuildDirectory = "Builds/WebGLPortrait";
-    private const string SessionConfigurationKey = "ProjectBow.WebGLPortrait.Configured.v1";
+    private const string SessionConfigurationKey = "ProjectBow.WebGLPortrait.Configured.v2";
 
     static ProjectBowWebGLBuild()
     {
@@ -38,7 +35,6 @@ public static class ProjectBowWebGLBuild
             throw new InvalidOperationException("Unity could not switch the active build target to WebGL.");
         }
 
-        BuildAddressables();
         Directory.CreateDirectory(BuildDirectory);
 
         string[] scenes = EditorBuildSettings.scenes
@@ -62,10 +58,13 @@ public static class ProjectBowWebGLBuild
         BuildReport report = BuildPipeline.BuildPlayer(options);
         if (report.summary.result != BuildResult.Succeeded)
         {
-            throw new InvalidOperationException($"WebGL build failed: {report.summary.result} ({report.summary.totalErrors} errors)");
+            throw new InvalidOperationException(
+                $"WebGL build failed: {report.summary.result} ({report.summary.totalErrors} errors)");
         }
 
-        Debug.Log($"ProjectBow portrait WebGL build completed: {Path.GetFullPath(BuildDirectory)}");
+        Debug.Log(
+            $"ProjectBow portrait WebGL build completed: {Path.GetFullPath(BuildDirectory)} " +
+            $"({report.summary.totalSize} bytes)");
     }
 
     public static void BuildFromCommandLine()
@@ -108,52 +107,13 @@ public static class ProjectBowWebGLBuild
         SetWebGLProperty("compressionFormat", "Gzip");
         SetWebGLProperty("powerPreference", "HighPerformance");
 
-        ConfigureAddressablesForStageStreaming();
         AssetDatabase.SaveAssets();
 
         if (logCompletion)
         {
-            Debug.Log("ProjectBow is configured for portrait mobile WebGL. Use ProjectBow > WebGL > Build Portrait WebGL to build.");
-        }
-    }
-
-    private static void ConfigureAddressablesForStageStreaming()
-    {
-        AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
-        if (settings == null)
-        {
-            Debug.LogWarning("Addressables settings were not found. Open the Addressables window once, then run the configurator again.");
-            return;
-        }
-
-        foreach (AddressableAssetGroup group in settings.groups)
-        {
-            if (group == null || group.ReadOnly)
-            {
-                continue;
-            }
-
-            BundledAssetGroupSchema schema = group.GetSchema<BundledAssetGroupSchema>();
-            if (schema == null)
-            {
-                continue;
-            }
-
-            schema.BundleMode = BundledAssetGroupSchema.BundlePackingMode.PackSeparately;
-            schema.UseAssetBundleCache = true;
-            schema.UseAssetBundleCrc = true;
-            EditorUtility.SetDirty(schema);
-        }
-
-        EditorUtility.SetDirty(settings);
-    }
-
-    private static void BuildAddressables()
-    {
-        AddressableAssetSettings.BuildPlayerContent(out AddressablesPlayerBuildResult result);
-        if (!string.IsNullOrEmpty(result.Error))
-        {
-            throw new InvalidOperationException("Addressables build failed: " + result.Error);
+            Debug.Log(
+                "ProjectBow is configured for portrait mobile WebGL. " +
+                "Use ProjectBow > WebGL > Build Portrait WebGL to build.");
         }
     }
 
