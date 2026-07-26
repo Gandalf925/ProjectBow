@@ -21,8 +21,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Checkout
+      - name: Checkout migration files only
         uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            Assets/Scripts/BowController.cs
+            Assets/Scripts/CameraController.cs
+            Assets/Scripts/CloudManager.cs
+            Assets/Scripts/PointerInputUtility.cs
+            Assets/Scripts/ProjectBowMobileRuntime.cs
+            Assets/Editor/ProjectBowWebGLBuild.cs
+            Assets/WebGLTemplates/ProjectBowPortrait/index.html
+            Assets/AddressableAssetsData/AssetGroups/Schemas/Default Local Group_BundledAssetGroupSchema.asset
+            Tools/verify_webgl_portrait.py
 
       - name: Verify portrait WebGL contract
         run: python3 Tools/verify_webgl_portrait.py
