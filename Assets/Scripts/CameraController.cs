@@ -2,73 +2,113 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public float rotationSpeed = 0.2f; // カメラの回転速度
-    private Vector3 startMousePosition; // マウスの開始位置
-    private bool isDragging = false; // プレイヤーがクリック中かどうか
+    public float rotationSpeed = 0.2f;
 
-    // 回転角度の制限値
-    public float minVerticalAngle = -50f; // 上方向の制限
-    public float maxVerticalAngle = 50f;  // 下方向の制限
-    public float minHorizontalAngle = -30f; // 左方向の制限
-    public float maxHorizontalAngle = 30f;  // 右方向の制限
+    public float minVerticalAngle = -50f;
+    public float maxVerticalAngle = 50f;
+    public float minHorizontalAngle = -30f;
+    public float maxHorizontalAngle = 30f;
 
-    private Vector3 currentRotation; // 現在の回転角度
+    private const int NoPointer = int.MinValue;
 
-    void Start()
+    private int activePointerId = NoPointer;
+    private Vector2 previousPointerPosition;
+    private Vector3 currentRotation;
+
+    private void Start()
     {
-        // 現在のカメラの回転角度を保存
         currentRotation = transform.eulerAngles;
     }
 
-    void Update()
+    private void Update()
     {
-        HandleMouseInput();
-    }
-
-    void HandleMouseInput()
-    {
-        // クリック開始時にマウス位置を保存
-        if (Input.GetMouseButtonDown(0))
+        if (activePointerId == NoPointer)
         {
-            startMousePosition = Input.mousePosition;
-            isDragging = true;
+            TryBeginPointer();
+            return;
         }
 
-        // クリック中にカメラを回転させる
-        if (Input.GetMouseButton(0) && isDragging)
+        if (activePointerId == PointerInputUtility.MousePointerId)
         {
-            RotateCamera();
+            HandleMousePointer();
         }
-
-        // クリックを離したらドラッグ状態を終了
-        if (Input.GetMouseButtonUp(0))
+        else
         {
-            isDragging = false;
+            HandleTouchPointer();
         }
     }
 
-    void RotateCamera()
+    private void TryBeginPointer()
     {
-        // 現在のマウス位置
-        Vector3 currentMousePosition = Input.mousePosition;
-        Vector3 mouseDelta = currentMousePosition - startMousePosition; // マウスの移動量
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began && !PointerInputUtility.IsPointerOverUI(touch.fingerId))
+            {
+                activePointerId = touch.fingerId;
+                previousPointerPosition = touch.position;
+            }
 
-        // マウスの動きに基づいてカメラの回転角度を計算
-        float rotationX = -mouseDelta.y * rotationSpeed; // 上下の回転
-        float rotationY = mouseDelta.x * rotationSpeed;  // 左右の回転
+            return;
+        }
 
-        // 現在のカメラ回転角度に加算
-        currentRotation.x += rotationX;
-        currentRotation.y += rotationY;
+        if (Input.GetMouseButtonDown(0) && !PointerInputUtility.IsPointerOverUI(PointerInputUtility.MousePointerId))
+        {
+            activePointerId = PointerInputUtility.MousePointerId;
+            previousPointerPosition = Input.mousePosition;
+        }
+    }
 
-        // 回転角度を制限（上下は±50度、左右は±30度）
+    private void HandleTouchPointer()
+    {
+        if (!PointerInputUtility.TryGetTouch(activePointerId, out Touch touch))
+        {
+            EndPointer();
+            return;
+        }
+
+        if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+        {
+            EndPointer();
+            return;
+        }
+
+        RotateCamera(touch.position);
+    }
+
+    private void HandleMousePointer()
+    {
+        if (Input.GetMouseButtonUp(0) || !Input.GetMouseButton(0))
+        {
+            EndPointer();
+            return;
+        }
+
+        RotateCamera(Input.mousePosition);
+    }
+
+    private void RotateCamera(Vector2 pointerPosition)
+    {
+        Vector2 pointerDelta = pointerPosition - previousPointerPosition;
+        float resolutionScale = 1080f / Mathf.Max(Screen.height, 1);
+
+        currentRotation.x -= pointerDelta.y * rotationSpeed * resolutionScale;
+        currentRotation.y += pointerDelta.x * rotationSpeed * resolutionScale;
+
         currentRotation.x = Mathf.Clamp(currentRotation.x, minVerticalAngle, maxVerticalAngle);
         currentRotation.y = Mathf.Clamp(currentRotation.y, minHorizontalAngle, maxHorizontalAngle);
 
-        // カメラの回転角度を更新
         transform.eulerAngles = currentRotation;
+        previousPointerPosition = pointerPosition;
+    }
 
-        // 更新後のマウス位置を保存
-        startMousePosition = currentMousePosition;
+    private void EndPointer()
+    {
+        activePointerId = NoPointer;
+    }
+
+    private void OnDisable()
+    {
+        EndPointer();
     }
 }
