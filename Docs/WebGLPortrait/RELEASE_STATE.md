@@ -3,11 +3,12 @@
 ## Current classification
 
 - Branch: `webgl-portrait-mobile`
+- Draft PR: `#1`
 - Date: 2026-07-26
-- Status: implementation complete for the static migration slice; not release-ready
+- Status: static migration implementation complete; not release-ready
 - Baseline: Unity 2023.2.3f1
 - Orientation: portrait
-- Verification completed: repository diff review and static contract definition
+- Static verification: 1 / 1 GREEN in GitHub Actions run `30205177842`
 - Verification not completed: Unity compile, Addressables build, WebGL build, gameplay smoke, mobile device performance
 
 ## Implemented scope
@@ -21,8 +22,15 @@
 - Addressables per-entry bundle configuration
 - explicit Addressables-before-player build flow
 - duplicate cloud population correction
-- static verification workflow
+- sparse static verification workflow for the oversized repository
 - migration RTM, decisions and issue register
+
+## Verification evidence
+
+- Initial workflow run `30205090223`: failed during full repository checkout before tests because the repository contains more than 114,000 files and is asset-heavy.
+- Workflow was corrected to use partial clone and sparse checkout of migration files only.
+- Follow-up workflow run `30205177842`: checkout GREEN, static portrait contract GREEN.
+- The passing static contract verifies required source markers and the absence of the former duplicate-cloud initialization path.
 
 ## Release blockers
 
