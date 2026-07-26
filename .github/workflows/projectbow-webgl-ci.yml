@@ -9,6 +9,11 @@ on:
       - opened
       - synchronize
       - reopened
+    paths:
+      - '.github/workflows/projectbow-webgl-ci.yml'
+      - 'Assets/**'
+      - 'Packages/**'
+      - 'ProjectSettings/**'
 
 permissions:
   contents: read
@@ -21,14 +26,42 @@ jobs:
   webgl-build:
     name: WebGL baseline build
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
 
     steps:
-      - name: Checkout
+      - name: Free disk space before checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'Disk usage before cleanup:'
+          df -h /
+
+          # ProjectBow is asset-heavy. Free space before Git LFS materializes files.
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/.ghcup
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo apt-get clean
+          docker system prune --all --force || true
+
+          echo 'Disk usage after cleanup:'
+          df -h /
+
+      - name: Checkout current revision with LFS
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           lfs: true
+          clean: true
+
+      - name: Report checkout size
+        shell: bash
+        run: |
+          set -euo pipefail
+          du -sh .
+          df -h /
+          git lfs ls-files | wc -l
 
       - name: Verify Unity secrets are available
         shell: bash
@@ -42,24 +75,6 @@ jobs:
           test -n "$UNITY_EMAIL" || { echo 'UNITY_EMAIL is not available to this repository.'; exit 1; }
           test -n "$UNITY_PASSWORD" || { echo 'UNITY_PASSWORD is not available to this repository.'; exit 1; }
           echo 'Unity credential secrets are available.'
-
-      - name: Free disk space for Unity WebGL
-        shell: bash
-        run: |
-          set -euo pipefail
-          echo 'Disk usage before cleanup:'
-          df -h /
-
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /usr/local/.ghcup
-          sudo rm -rf /opt/hostedtoolcache/CodeQL
-          sudo apt-get clean
-          docker system prune --all --force || true
-
-          echo 'Disk usage after cleanup:'
-          df -h /
 
       - name: Cache Unity WebGL Library
         uses: actions/cache@v4
