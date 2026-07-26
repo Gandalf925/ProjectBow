@@ -94,6 +94,8 @@ public static class ProjectBowWebGLBuild
         PlayerSettings.defaultWebScreenWidth = 540;
         PlayerSettings.defaultWebScreenHeight = 960;
         PlayerSettings.stripEngineCode = true;
+        QualitySettings.SetQualityLevel(0, true);
+        QualitySettings.vSyncCount = 0;
 
         SetWebGLProperty("template", TemplateName);
         SetWebGLProperty("dataCaching", true);
