@@ -1,0 +1,28 @@
+name: Verify Portrait WebGL
+
+on:
+  push:
+    branches:
+      - webgl-portrait-mobile
+  pull_request:
+    paths:
+      - 'Assets/Scripts/**'
+      - 'Assets/Editor/**'
+      - 'Assets/WebGLTemplates/**'
+      - 'Assets/AddressableAssetsData/**'
+      - 'Tools/verify_webgl_portrait.py'
+      - '.github/workflows/verify-webgl-portrait.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  static-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify portrait WebGL contract
+        run: python3 Tools/verify_webgl_portrait.py
