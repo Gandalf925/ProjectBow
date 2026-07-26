@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>{{{ PRODUCT_NAME }}}</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      background: #080b10;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    #unity-container {
+      position: fixed;
+      inset: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+      display: grid;
+      place-items: center;
+      background: #080b10;
+    }
+    #unity-canvas {
+      width: 100%;
+      height: 100%;
+      display: none;
+      background: #080b10;
+      outline: none;
+      touch-action: none;
+    }
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      text-align: center;
+      background: radial-gradient(circle at 50% 35%, #263748 0%, #101820 48%, #080b10 100%);
+      z-index: 4;
+    }
+    .panel { width: min(86vw, 420px); }
+    .title { margin: 0 0 10px; font-size: clamp(28px, 8vw, 46px); letter-spacing: .04em; }
+    .copy { margin: 0 0 22px; color: #c6d0d9; line-height: 1.5; }
+    button {
+      width: 100%;
+      min-height: 56px;
+      border: 0;
+      border-radius: 14px;
+      background: #f2f5f7;
+      color: #0b1117;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    #loading-screen, #rotate-screen { display: none; }
+    #progress-track { width: 100%; height: 10px; overflow: hidden; border-radius: 99px; background: rgba(255,255,255,.14); }
+    #progress-bar { width: 0%; height: 100%; background: #f2f5f7; transition: width .12s linear; }
+    #loading-label { margin-top: 12px; color: #c6d0d9; font-variant-numeric: tabular-nums; }
+    #unity-warning {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      z-index: 8;
+      pointer-events: none;
+    }
+    .warning { margin: 6px auto; padding: 10px 12px; max-width: 560px; border-radius: 8px; background: #8f291f; color: white; }
+    @media (orientation: landscape) and (max-height: 700px) {
+      #rotate-screen.active { display: grid; }
+    }
+  </style>
+</head>
+<body>
+  <div id="unity-container">
+    <canvas id="unity-canvas" width="{{{ WIDTH }}}" height="{{{ HEIGHT }}}" tabindex="-1"></canvas>
+    <div id="unity-warning"></div>
+
+    <div id="start-screen" class="screen">
+      <div class="panel">
+        <h1 class="title">{{{ PRODUCT_NAME }}}</h1>
+        <p class="copy">Portrait mode · Touch and drag to aim · Release to shoot</p>
+        <button id="start-button" type="button">TAP TO START</button>
+      </div>
+    </div>
+
+    <div id="loading-screen" class="screen">
+      <div class="panel">
+        <div id="progress-track"><div id="progress-bar"></div></div>
+        <div id="loading-label">Loading 0%</div>
+      </div>
+    </div>
+
+    <div id="rotate-screen" class="screen">
+      <div class="panel">
+        <h1 class="title">ROTATE DEVICE</h1>
+        <p class="copy">ProjectBow is designed for portrait play.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const container = document.querySelector('#unity-container');
+    const canvas = document.querySelector('#unity-canvas');
+    const startScreen = document.querySelector('#start-screen');
+    const loadingScreen = document.querySelector('#loading-screen');
+    const rotateScreen = document.querySelector('#rotate-screen');
+    const startButton = document.querySelector('#start-button');
+    const progressBar = document.querySelector('#progress-bar');
+    const loadingLabel = document.querySelector('#loading-label');
+    const warningBanner = document.querySelector('#unity-warning');
+
+    let unityStarted = false;
+
+    function isLandscapePhone() {
+      return window.innerWidth > window.innerHeight && window.innerHeight < 700;
+    }
+
+    function updateOrientationNotice() {
+      rotateScreen.classList.toggle('active', isLandscapePhone());
+    }
+
+    function unityShowBanner(message, type) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = message;
+      warningBanner.appendChild(div);
+      if (type !== 'error') {
+        setTimeout(() => div.remove(), 5000);
+      }
+    }
+
+    function preventBrowserGesture(event) {
+      if (event.cancelable) event.preventDefault();
+    }
+
+    document.addEventListener('touchmove', preventBrowserGesture, { passive: false });
+    document.addEventListener('gesturestart', preventBrowserGesture, { passive: false });
+    document.addEventListener('contextmenu', preventBrowserGesture);
+    window.addEventListener('resize', updateOrientationNotice);
+    window.addEventListener('orientationchange', updateOrientationNotice);
+    updateOrientationNotice();
+
+    startButton.addEventListener('click', () => {
+      if (unityStarted || isLandscapePhone()) {
+        updateOrientationNotice();
+        return;
+      }
+
+      unityStarted = true;
+      startScreen.style.display = 'none';
+      loadingScreen.style.display = 'grid';
+
+      const buildUrl = 'Build';
+      const loaderUrl = buildUrl + '/{{{ LOADER_FILENAME }}}';
+      const config = {
+        dataUrl: buildUrl + '/{{{ DATA_FILENAME }}}',
+        frameworkUrl: buildUrl + '/{{{ FRAMEWORK_FILENAME }}}',
+        codeUrl: buildUrl + '/{{{ CODE_FILENAME }}}',
+        streamingAssetsUrl: 'StreamingAssets',
+        companyName: '{{{ COMPANY_NAME }}}',
+        productName: '{{{ PRODUCT_NAME }}}',
+        productVersion: '{{{ PRODUCT_VERSION }}}',
+        devicePixelRatio: Math.min(window.devicePixelRatio || 1, 1.5),
+        showBanner: unityShowBanner
+      };
+
+      const script = document.createElement('script');
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, progress => {
+          const percent = Math.round(progress * 100);
+          progressBar.style.width = percent + '%';
+          loadingLabel.textContent = 'Loading ' + percent + '%';
+        }).then(() => {
+          loadingScreen.style.display = 'none';
+          canvas.style.display = 'block';
+          canvas.focus();
+        }).catch(message => {
+          unityShowBanner(String(message), 'error');
+          loadingLabel.textContent = 'Failed to start';
+        });
+      };
+      script.onerror = () => {
+        unityShowBanner('The Unity loader could not be downloaded.', 'error');
+        loadingLabel.textContent = 'Failed to load';
+      };
+      document.body.appendChild(script);
+    });
+  </script>
+</body>
+</html>

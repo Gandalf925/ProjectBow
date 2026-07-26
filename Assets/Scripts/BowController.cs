@@ -1,16 +1,19 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class BowController : MonoBehaviour
 {
-    [SerializeField] private GameObject arrowPrefab; // 矢のプレハブ
-    [SerializeField] private Transform arrowSpawnPoint; // 矢が発射される位置
-    [SerializeField] private float shootForce = 100f; // 矢の飛ばす力（初期値）
+    [SerializeField] private GameObject arrowPrefab;
+    [SerializeField] private Transform arrowSpawnPoint;
+    [SerializeField] private float shootForce = 100f;
+
+    private const int NoPointer = int.MinValue;
+
     private string setAnimName;
-    private GameObject currentArrow; // 現在の矢
+    private GameObject currentArrow;
     private Animator anim;
     private StageManagerBase stageManager;
     private bool isAiming;
+    private int activePointerId = NoPointer;
 
     private void Start()
     {
@@ -20,101 +23,202 @@ public class BowController : MonoBehaviour
 
     private void Update()
     {
-        if (stageManager.bowCount <= 0 || stageManager.isGameEnded)
-            return;
-
-        // UIボタンを押している間はAimしない
-        if (Input.GetMouseButtonDown(0) && !IsPointerOverUI() && !isAiming)
+        if (stageManager == null)
         {
-            AimBow();
+            return;
         }
 
-        if (Input.GetMouseButtonUp(0) && !IsPointerOverUI() && isAiming)
+        if (stageManager.bowCount <= 0 || stageManager.isGameEnded)
         {
-            ShootArrow();
+            if (isAiming)
+            {
+                CancelAim();
+            }
+
+            return;
+        }
+
+        if (activePointerId == NoPointer)
+        {
+            TryBeginAim();
+            return;
+        }
+
+        if (activePointerId == PointerInputUtility.MousePointerId)
+        {
+            HandleMouseRelease();
+        }
+        else
+        {
+            HandleTouchRelease();
         }
     }
 
-    private bool IsPointerOverUI()
+    private void TryBeginAim()
     {
-        // マウスまたはタッチがUI要素上にあるかをチェック
-        return EventSystem.current.IsPointerOverGameObject();
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began && !PointerInputUtility.IsPointerOverUI(touch.fingerId))
+            {
+                activePointerId = touch.fingerId;
+                AimBow();
+            }
+
+            return;
+        }
+
+        if (Input.GetMouseButtonDown(0) && !PointerInputUtility.IsPointerOverUI(PointerInputUtility.MousePointerId))
+        {
+            activePointerId = PointerInputUtility.MousePointerId;
+            AimBow();
+        }
+    }
+
+    private void HandleTouchRelease()
+    {
+        if (!PointerInputUtility.TryGetTouch(activePointerId, out Touch touch))
+        {
+            CancelAim();
+            return;
+        }
+
+        if (touch.phase == TouchPhase.Ended)
+        {
+            ShootArrow();
+        }
+        else if (touch.phase == TouchPhase.Canceled)
+        {
+            CancelAim();
+        }
+    }
+
+    private void HandleMouseRelease()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            ShootArrow();
+        }
+        else if (!Input.GetMouseButton(0))
+        {
+            CancelAim();
+        }
     }
 
     private void AimBow()
     {
-        IsAimingTrue();
+        if (arrowPrefab == null || arrowSpawnPoint == null)
+        {
+            Debug.LogError("BowController is missing the arrow prefab or spawn point.");
+            activePointerId = NoPointer;
+            return;
+        }
 
-        GameObject arrow = Instantiate(arrowPrefab, arrowSpawnPoint.position, arrowSpawnPoint.rotation); // 矢を生成
-        arrow.transform.SetParent(arrowSpawnPoint); // 矢を弓に取り付ける
-        currentArrow = arrow;
-        anim.SetBool("isAiming", true); // 弓のアニメーションを再生
+        SetAiming(true);
+
+        currentArrow = Instantiate(arrowPrefab, arrowSpawnPoint.position, arrowSpawnPoint.rotation);
+        currentArrow.transform.SetParent(arrowSpawnPoint, true);
+
+        if (anim != null)
+        {
+            anim.SetBool("isAiming", true);
+        }
     }
 
     private void ShootArrow()
     {
+        activePointerId = NoPointer;
+
         if (currentArrow == null)
         {
-            Debug.LogError("currentArrow is null in ShootArrow");
+            CancelAim();
             return;
         }
 
         Rigidbody rb = currentArrow.GetComponent<Rigidbody>();
         if (rb == null)
         {
-            Debug.LogError("Rigidbody is missing on currentArrow");
+            Debug.LogError("Rigidbody is missing on currentArrow.");
+            Destroy(currentArrow);
+            currentArrow = null;
+            CancelAim();
             return;
         }
 
         rb.isKinematic = false;
         rb.AddForce(arrowSpawnPoint.forward * shootForce, ForceMode.Impulse);
+        currentArrow.transform.SetParent(null, true);
+        currentArrow = null;
 
-        currentArrow.transform.SetParent(null); // 矢を弓から離す
-        anim.SetBool("isAiming", false);
-        anim.SetTrigger(setAnimName);
+        if (anim != null)
+        {
+            anim.SetBool("isAiming", false);
+            if (!string.IsNullOrEmpty(setAnimName))
+            {
+                anim.SetTrigger(setAnimName);
+            }
+        }
 
-        IsAimingFalse();
-
+        SetAiming(false);
         stageManager.OnArrowShot();
     }
 
-    private void IsAimingFalse()
+    private void CancelAim()
     {
-        isAiming = false;
-        stageManager.isAiming = false;
+        activePointerId = NoPointer;
+
+        if (currentArrow != null)
+        {
+            Destroy(currentArrow);
+            currentArrow = null;
+        }
+
+        if (anim != null)
+        {
+            anim.SetBool("isAiming", false);
+        }
+
+        SetAiming(false);
     }
 
-    private void IsAimingTrue()
+    private void SetAiming(bool value)
     {
-        isAiming = true;
-        stageManager.isAiming = true;
+        isAiming = value;
+        if (stageManager != null)
+        {
+            stageManager.isAiming = value;
+        }
     }
 
-    // SmallShotの処理
+    private void OnDisable()
+    {
+        if (isAiming || currentArrow != null)
+        {
+            CancelAim();
+        }
+    }
+
     public void SetVerySmallShot()
     {
-        shootForce = 10;
+        shootForce = 10f;
         setAnimName = "SmallShot";
     }
 
-    // SmallShotの処理
     public void SetSmallShot()
     {
-        shootForce = 30;
+        shootForce = 30f;
         setAnimName = "SmallShot";
     }
 
-    // MiddleShotの処理
     public void SetMiddleShot()
     {
-        shootForce = 50;
+        shootForce = 50f;
         setAnimName = "MiddleShot";
     }
 
-    // FullShotの処理
     public void SetFullShot()
     {
-        shootForce = 80;
+        shootForce = 80f;
         setAnimName = "FullShot";
     }
 }

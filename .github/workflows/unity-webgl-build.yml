@@ -1,0 +1,128 @@
+name: Build Portrait WebGL with Unity
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - '.github/workflows/unity-webgl-build.yml'
+      - 'Assets/**'
+      - 'Packages/**'
+      - 'ProjectSettings/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: projectbow-unity-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  credential-preflight:
+    name: Unity credential preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify required secret names resolve
+        shell: bash
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          missing=0
+          if [[ -z "$UNITY_LICENSE" ]]; then
+            echo 'UNITY_LICENSE is not available to ProjectBow.'
+            missing=1
+          fi
+          if [[ -z "$UNITY_EMAIL" ]]; then
+            echo 'UNITY_EMAIL is not available to ProjectBow.'
+            missing=1
+          fi
+          if [[ -z "$UNITY_PASSWORD" ]]; then
+            echo 'UNITY_PASSWORD is not available to ProjectBow.'
+            missing=1
+          fi
+          if [[ "$missing" -ne 0 ]]; then
+            exit 1
+          fi
+          echo 'All required Unity secret names are available.'
+
+  webgl-build:
+    name: Unity 2023.2.3f1 portrait WebGL build
+    needs: credential-preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Free disk space before repository checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'Disk usage before cleanup:'
+          df -h /
+
+          # ProjectBow contains a large historical asset library. Remove SDKs that
+          # are not used by a WebGL-only build before Git LFS materializes assets.
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/.ghcup
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo apt-get clean
+          docker system prune --all --force || true
+
+          echo 'Disk usage after cleanup:'
+          df -h /
+
+      - name: Checkout current revision with Git LFS
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          lfs: true
+          clean: true
+
+      - name: Report materialized repository size
+        shell: bash
+        run: |
+          set -euo pipefail
+          du -sh .
+          df -h /
+          printf 'LFS tracked files: '
+          git lfs ls-files | wc -l
+
+      - name: Build WebGL with Unity
+        id: build
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: 2023.2.3f1
+          targetPlatform: WebGL
+          buildMethod: ProjectBowWebGLBuild.BuildFromCommandLine
+          versioning: None
+          allowDirtyBuild: true
+
+      - name: Verify generated WebGL files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f Builds/WebGLPortrait/index.html
+          test -d Builds/WebGLPortrait/Build
+          find Builds/WebGLPortrait -maxdepth 2 -type f -print | sort
+          du -sh Builds/WebGLPortrait
+
+      - name: Upload WebGL artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: projectbow-portrait-webgl
+          path: Builds/WebGLPortrait
+          if-no-files-found: error
+          retention-days: 14
