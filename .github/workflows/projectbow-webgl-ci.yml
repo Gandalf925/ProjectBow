@@ -1,0 +1,93 @@
+name: ProjectBow Unity 2023.2 WebGL CI
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: projectbow-unity-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  webgl-build:
+    name: WebGL baseline build
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Verify Unity secrets are available
+        shell: bash
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$UNITY_LICENSE" || { echo 'UNITY_LICENSE is not available to this repository.'; exit 1; }
+          test -n "$UNITY_EMAIL" || { echo 'UNITY_EMAIL is not available to this repository.'; exit 1; }
+          test -n "$UNITY_PASSWORD" || { echo 'UNITY_PASSWORD is not available to this repository.'; exit 1; }
+          echo 'Unity credential secrets are available.'
+
+      - name: Free disk space for Unity WebGL
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'Disk usage before cleanup:'
+          df -h /
+
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/.ghcup
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo apt-get clean
+          docker system prune --all --force || true
+
+          echo 'Disk usage after cleanup:'
+          df -h /
+
+      - name: Cache Unity WebGL Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: ProjectBow-Library-2023.2.3f1-WebGL-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            ProjectBow-Library-2023.2.3f1-WebGL-
+
+      - name: Build WebGL
+        id: build
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: 2023.2.3f1
+          targetPlatform: WebGL
+          buildMethod: ProjectBow.Editor.ProjectBowWebGLBuild.BuildWebGL
+          versioning: None
+          allowDirtyBuild: true
+
+      - name: Verify WebGL output
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f build/WebGL/index.html
+          test -d build/WebGL/Build
+          find build/WebGL -maxdepth 2 -type f -print | sort
+
+      - name: Upload WebGL artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: projectbow-webgl-baseline
+          path: build/WebGL
+          if-no-files-found: error
+          retention-days: 14
